@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChooseParticipantCell" id="KGk-i7-Jjw" customClass="CAGChooseParticipantTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="500" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="500" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participant Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G7U-5w-oJc">
+                        <rect key="frame" x="20" y="11" width="383" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="2001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bnr-AC-cfB">
+                        <rect key="frame" x="449" y="7" width="31" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="7oT-UQ-hlb"/>
+                            <constraint firstAttribute="width" secondItem="Bnr-AC-cfB" secondAttribute="height" multiplier="1:1" id="EqJ-wA-oIy"/>
+                            <constraint firstAttribute="width" constant="30" id="REU-mC-QhK"/>
+                        </constraints>
+                        <state key="normal" title="D">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="deleteParticipant:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1no-R2-KWv"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" tag="2000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QZw-6X-87Y">
+                        <rect key="frame" x="411" y="7" width="30" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="QQH-en-W1d"/>
+                            <constraint firstAttribute="width" constant="30" id="iEW-Ih-APU"/>
+                            <constraint firstAttribute="width" secondItem="QZw-6X-87Y" secondAttribute="height" multiplier="1:1" id="ovu-dP-2hd"/>
+                        </constraints>
+                        <state key="normal" image="EditImage.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="editParticipant:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Uz7-SG-vj4"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="G7U-5w-oJc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="5ju-FV-iYc"/>
+                    <constraint firstAttribute="centerY" secondItem="QZw-6X-87Y" secondAttribute="centerY" id="990-Z3-nVs"/>
+                    <constraint firstAttribute="centerY" secondItem="Bnr-AC-cfB" secondAttribute="centerY" id="QIM-fW-79Q"/>
+                    <constraint firstAttribute="trailing" secondItem="Bnr-AC-cfB" secondAttribute="trailing" constant="20" id="b9v-wG-0XH"/>
+                    <constraint firstItem="Bnr-AC-cfB" firstAttribute="leading" secondItem="QZw-6X-87Y" secondAttribute="trailing" constant="8" id="bD9-YI-RNU"/>
+                    <constraint firstAttribute="centerY" secondItem="G7U-5w-oJc" secondAttribute="centerY" id="iNU-V3-XaU"/>
+                    <constraint firstItem="QZw-6X-87Y" firstAttribute="leading" secondItem="G7U-5w-oJc" secondAttribute="trailing" constant="8" id="z3Y-tb-uLD"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="deleteParticipantButton" destination="Bnr-AC-cfB" id="n0g-wc-5AP"/>
+                <outlet property="editParticipantButton" destination="QZw-6X-87Y" id="0B8-5k-jyj"/>
+                <outlet property="participantNameLabel" destination="G7U-5w-oJc" id="TQe-BK-bau"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="EditImage.png" width="256" height="256"/>
+    </resources>
+</document>
