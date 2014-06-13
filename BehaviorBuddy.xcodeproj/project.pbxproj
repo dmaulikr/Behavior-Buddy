@@ -29,6 +29,14 @@
 		F59E27C6192FCE3900147641 /* PlusImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F59E27C4192FCE3900147641 /* PlusImage@2x.png */; };
 		F59E27C91930454500147641 /* EditImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F59E27C71930454500147641 /* EditImage.png */; };
 		F59E27CA1930454500147641 /* EditImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F59E27C81930454500147641 /* EditImage@2x.png */; };
+		F5AB95F1194A959E00713E28 /* XImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95ED194A959E00713E28 /* XImage.png */; };
+		F5AB95F2194A959E00713E28 /* XImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95EE194A959E00713E28 /* XImage@2x.png */; };
+		F5AB95F5194A95BD00713E28 /* CheckImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95F3194A95BD00713E28 /* CheckImage.png */; };
+		F5AB95F6194A95BD00713E28 /* CheckImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95F4194A95BD00713E28 /* CheckImage@2x.png */; };
+		F5AB95F9194AA10100713E28 /* ColorsImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95F7194AA10100713E28 /* ColorsImage.png */; };
+		F5AB95FA194AA10100713E28 /* ColorsImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95F8194AA10100713E28 /* ColorsImage@2x.png */; };
+		F5AB95FD194AAF6700713E28 /* TrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95FB194AAF6700713E28 /* TrashCan.png */; };
+		F5AB95FE194AAF6700713E28 /* TrashCan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95FC194AAF6700713E28 /* TrashCan@2x.png */; };
 		F5D2575318E10D4D00AF21F7 /* CAGCustomTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D2575218E10D4D00AF21F7 /* CAGCustomTypes.m */; };
 		F5D2576818E243AD00AF21F7 /* colorPicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F5D2575518E243AD00AF21F7 /* colorPicker.bundle */; };
 		F5D2576918E243AD00AF21F7 /* NEOColorPickerBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D2575718E243AD00AF21F7 /* NEOColorPickerBaseViewController.m */; };
@@ -109,6 +117,14 @@
 		F59E27C4192FCE3900147641 /* PlusImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlusImage@2x.png"; sourceTree = "<group>"; };
 		F59E27C71930454500147641 /* EditImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditImage.png; sourceTree = "<group>"; };
 		F59E27C81930454500147641 /* EditImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditImage@2x.png"; sourceTree = "<group>"; };
+		F5AB95ED194A959E00713E28 /* XImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = XImage.png; sourceTree = "<group>"; };
+		F5AB95EE194A959E00713E28 /* XImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "XImage@2x.png"; sourceTree = "<group>"; };
+		F5AB95F3194A95BD00713E28 /* CheckImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckImage.png; sourceTree = "<group>"; };
+		F5AB95F4194A95BD00713E28 /* CheckImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckImage@2x.png"; sourceTree = "<group>"; };
+		F5AB95F7194AA10100713E28 /* ColorsImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ColorsImage.png; sourceTree = "<group>"; };
+		F5AB95F8194AA10100713E28 /* ColorsImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ColorsImage@2x.png"; sourceTree = "<group>"; };
+		F5AB95FB194AAF6700713E28 /* TrashCan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrashCan.png; sourceTree = "<group>"; };
+		F5AB95FC194AAF6700713E28 /* TrashCan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrashCan@2x.png"; sourceTree = "<group>"; };
 		F5D2575118E10D4D00AF21F7 /* CAGCustomTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAGCustomTypes.h; sourceTree = "<group>"; };
 		F5D2575218E10D4D00AF21F7 /* CAGCustomTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAGCustomTypes.m; sourceTree = "<group>"; };
 		F5D2575518E243AD00AF21F7 /* colorPicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = colorPicker.bundle; sourceTree = "<group>"; };
@@ -258,6 +274,14 @@
 				F5EB7D3719452D6100ACEB45 /* CAGChooseParticipantTableViewCell.m */,
 				F5EB7D3819452D6100ACEB45 /* CAGChooseParticipantTableViewCell.xib */,
 				F504149518B8767D00787B21 /* Images.xcassets */,
+				F5AB95FB194AAF6700713E28 /* TrashCan.png */,
+				F5AB95FC194AAF6700713E28 /* TrashCan@2x.png */,
+				F5AB95F7194AA10100713E28 /* ColorsImage.png */,
+				F5AB95F8194AA10100713E28 /* ColorsImage@2x.png */,
+				F5AB95F3194A95BD00713E28 /* CheckImage.png */,
+				F5AB95F4194A95BD00713E28 /* CheckImage@2x.png */,
+				F5AB95ED194A959E00713E28 /* XImage.png */,
+				F5AB95EE194A959E00713E28 /* XImage@2x.png */,
 				F5EB7D29194515C800ACEB45 /* BackImage.png */,
 				F5EB7D2A194515C800ACEB45 /* BackImage@2x.png */,
 				F5EB7D2D1945168D00ACEB45 /* ForwardImage.png */,
@@ -424,8 +448,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5AB95F5194A95BD00713E28 /* CheckImage.png in Resources */,
 				F59E27C6192FCE3900147641 /* PlusImage@2x.png in Resources */,
 				F5D2576E18E243AD00AF21F7 /* NEOColorPickerHSLViewController.xib in Resources */,
+				F5AB95F6194A95BD00713E28 /* CheckImage@2x.png in Resources */,
 				F5EB7D2F1945168D00ACEB45 /* ForwardImage.png in Resources */,
 				F5D257A418E6222900AF21F7 /* app-icon-ipad@2x.png in Resources */,
 				F5DAA35218BC7F340097CB97 /* CAGNewBehaviorView.xib in Resources */,
@@ -433,6 +459,8 @@
 				F5D2579918E2986000AF21F7 /* color-picker-hue@2x.png in Resources */,
 				F5D2577018E243AD00AF21F7 /* NEOColorPickerHueGridViewController.xib in Resources */,
 				F5EB7D301945168D00ACEB45 /* ForwardImage@2x.png in Resources */,
+				F5AB95F2194A959E00713E28 /* XImage@2x.png in Resources */,
+				F5AB95FE194AAF6700713E28 /* TrashCan@2x.png in Resources */,
 				F504148E18B8767D00787B21 /* Main_iPad.storyboard in Resources */,
 				F5D2578818E284B900AF21F7 /* CAGParticipantViewController.xib in Resources */,
 				F5D2579B18E53FFD00AF21F7 /* CAGParticipantResponsesView.xib in Resources */,
@@ -440,17 +468,21 @@
 				F5EB7D2B194515C800ACEB45 /* BackImage.png in Resources */,
 				F5D2579718E2893500AF21F7 /* CAGActionTableViewCell.xib in Resources */,
 				F5EB7D2C194515C800ACEB45 /* BackImage@2x.png in Resources */,
+				F5AB95F1194A959E00713E28 /* XImage.png in Resources */,
 				F5D257A618E6222900AF21F7 /* app-icon-iphone@2x.png in Resources */,
 				F5D257A518E6222900AF21F7 /* app-icon-iphone.png in Resources */,
 				F59E27CA1930454500147641 /* EditImage@2x.png in Resources */,
 				F59E27C5192FCE3900147641 /* PlusImage.png in Resources */,
+				F5AB95FA194AA10100713E28 /* ColorsImage@2x.png in Resources */,
 				F504149618B8767D00787B21 /* Images.xcassets in Resources */,
 				F5D2576B18E243AD00AF21F7 /* NEOColorPickerFavoritesViewController.xib in Resources */,
+				F5AB95F9194AA10100713E28 /* ColorsImage.png in Resources */,
 				F5D257A318E6222900AF21F7 /* app-icon-ipad.png in Resources */,
 				F5EB7D35194529A400ACEB45 /* CAGChooseParticipantViewController.xib in Resources */,
 				F5EB7D3A19452D6100ACEB45 /* CAGChooseParticipantTableViewCell.xib in Resources */,
 				F504148B18B8767D00787B21 /* Main_iPhone.storyboard in Resources */,
 				F5D2578D18E2890500AF21F7 /* CAGTypeTableViewCell.xib in Resources */,
+				F5AB95FD194AAF6700713E28 /* TrashCan.png in Resources */,
 				F504148218B8767D00787B21 /* InfoPlist.strings in Resources */,
 				F530AB6818C0A83F00B4CFE7 /* CAGRecordBehaviorView.xib in Resources */,
 				F5D2576818E243AD00AF21F7 /* colorPicker.bundle in Resources */,

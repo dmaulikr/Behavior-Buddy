@@ -192,16 +192,16 @@
 - (void)setAvailability:(BOOL)available forInitiationAtIndex:(NSUInteger)index initiationType:(CAGInitiationType *)initiationType
 {
   if (available) {
-    [self.hiddenInitiations removeObjectForKey:[NSString stringWithFormat:@"%@,%du", initiationType.name, index]];
+    [self.hiddenInitiations removeObjectForKey:[NSString stringWithFormat:@"%@,%lu", initiationType.name, (unsigned long)index]];
   }
   else {
-    [self.hiddenInitiations setObject:[NSNumber numberWithBool:YES] forKey:[NSString stringWithFormat:@"%@,%du", initiationType.name, index]];
+    [self.hiddenInitiations setObject:[NSNumber numberWithBool:YES] forKey:[NSString stringWithFormat:@"%@,%lu", initiationType.name, (unsigned long)index]];
   }
 }
 
 - (BOOL)getAvailabilityForInitiationAtIndex:(NSUInteger)index initiationType:(CAGInitiationType *)initiationType
 {
-  return ![self.hiddenInitiations objectForKey:[NSString stringWithFormat:@"%@,%du", initiationType.name, index]];
+  return ![self.hiddenInitiations objectForKey:[NSString stringWithFormat:@"%@,%luu", initiationType.name, (unsigned long)index]];
 }
 
 - (NSUInteger)getNumInitiationsRequiredForInitiationType:(CAGInitiationType *)initiationType

@@ -42,7 +42,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="wy4-nm-1Vj"/>
                     </constraints>
-                    <state key="normal" title="Start ->">
+                    <state key="normal" title="Start">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -55,7 +55,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="246" id="4jn-sE-dqM"/>
                     </constraints>
-                    <state key="normal" title="New Participant +">
+                    <state key="normal" title="New Participant">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
