@@ -7,6 +7,7 @@
 #define ALERT_VIEW_DELETE_PARTICIPANT ((int) 1002)
 #define BUTTON_EDIT_PARTICIPANT       ((int) 2000)
 #define BUTTON_DELETE_PARTICIPANT     ((int) 2001)
+#define NO_CURRENT                    ((int) -1)
 
 @interface CAGChooseParticipantViewController ()
 
@@ -15,6 +16,7 @@
 @property IBOutlet UIButton *startButton;
 @property NSMutableArray *participants;
 @property NSInteger selectedParticipant;
+@property UIColor *blueColor;
 
 @end
 
@@ -32,8 +34,9 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.selectedParticipant = -1;
+  self.selectedParticipant = NO_CURRENT;
   self.startButton.enabled = NO;
+  self.blueColor = [UIColor colorWithRed:0 green:0.5 blue:1 alpha:1];
   
   NSMutableArray *participants = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"participants"]];
   if (participants) {
@@ -85,16 +88,46 @@
   CAGChooseParticipantTableViewCell *theCell = (CAGChooseParticipantTableViewCell *)cell;
   CAGParticipant *participant = [self.participants objectAtIndex:indexPath.row];
   theCell.participantNameLabel.text = participant.name;
+  if (indexPath.row == self.selectedParticipant) {
+    theCell.backgroundColor = self.blueColor;
+  }
+  else {
+    theCell.backgroundColor = [UIColor whiteColor];
+  }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  if (self.selectedParticipant == indexPath.row) {
+    // selected the current row, recolor it blue
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    return;
+  }
+  NSUInteger oldSelected = self.selectedParticipant;
+  self.selectedParticipant = indexPath.row;
+  NSArray *rows;
+  if (oldSelected == NO_CURRENT) {
+    rows = @[indexPath];
+  }
+  else {
+    rows = @[indexPath, [NSIndexPath indexPathForRow:oldSelected inSection:0]];
+  }
   self.selectedParticipant = indexPath.row;
   self.startButton.enabled = YES;
+  [tableView reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+  if (buttonIndex != 1) {
+    // alert box canceled
+    if (alertView.tag == ALERT_VIEW_NEW_PARTICIPANT) {
+      // no participant is highlighted anymore, and no new participant was created so we can't start
+      self.startButton.enabled = NO;
+    }
+    return;
+  }
   switch (alertView.tag) {
     case ALERT_VIEW_NEW_PARTICIPANT: {
       NSString *name = [alertView textFieldAtIndex:0].text;
@@ -102,7 +135,7 @@
       [self.participants addObject:[[CAGParticipant alloc] initWithName:name]];
       self.selectedParticipant = self.participants.count - 1;
       [self.participantTableView reloadData];
-      [self.participantTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedParticipant inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+      [self.participantTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedParticipant inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
       self.startButton.enabled = YES;
     }
       break;
@@ -121,7 +154,7 @@
     case ALERT_VIEW_DELETE_PARTICIPANT: {
       [self.participants removeObjectAtIndex:self.selectedParticipant];
       [self.participantTableView reloadData];
-      self.selectedParticipant = -1;
+      self.selectedParticipant = NO_CURRENT;
       self.startButton.enabled = NO;
     }
       break;
@@ -131,6 +164,7 @@
   }
 }
 
+// makes a name posessive, correcting for names ending in 's'
 - (NSString *)s:(NSString *)name
 {
   if ([name characterAtIndex:name.length-1] == 's') {
@@ -162,11 +196,11 @@
 
 - (IBAction)newParticipant:(id)sender
 {
-  self.selectedParticipant = -1;
-  [self.participantTableView deselectRowAtIndexPath:self.participantTableView.indexPathForSelectedRow animated:YES];
+  self.selectedParticipant = NO_CURRENT;
   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Participant" message:@"What is the participant's name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
   alertView.tag = ALERT_VIEW_NEW_PARTICIPANT;
   alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+  [alertView textFieldAtIndex:0].placeholder = @"Name";
   [alertView show];
 }
 

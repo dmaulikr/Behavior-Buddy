@@ -2,6 +2,8 @@
 #import "CAGNewBehaviorView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CAGCustomTypes.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <ImageIO/ImageIO.h>
 
 /***
  Using Color Picker from https://github.com/kartech/colorpicker
@@ -40,6 +42,7 @@
 @property BOOL choosingColor;
 @property BOOL choosingTypeColor;
 @property UIColor *blueColor;
+@property UIImage *behaviorImage;
 
 @end
 
@@ -120,6 +123,11 @@
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.participants];
   [info setObject:data forKey:@"participants"];
   [info synchronize];
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+  return UIInterfaceOrientationMaskLandscape;
 }
 
 - (void)newParticipant:(NSString *)name
@@ -317,7 +325,6 @@
     UILabel *textLabel = (UILabel *)[cell viewWithTag:TABLE_VIEW_CELL_LABEL_TAG];
     CAGInitiation *behavior = [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:indexPath.row];
     textLabel.text = behavior.name;
-    textLabel.textColor = behavior.color;
     
     UIButton *editButton = (UIButton *)[cell viewWithTag:TABLE_VIEW_CELL_EDIT_TAG];
     UIButton *deleteButton = (UIButton *)[cell viewWithTag:TABLE_VIEW_CELL_DELETE_TAG];
@@ -390,6 +397,8 @@
       self.currentResponse = NO_CURRENT;
       [self.behaviorTableView reloadData];
       [self.responseTableView reloadData];
+      CAGInitiation *behavior = [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:indexPath.row];
+      [self showBehaviorImage:behavior];
     }
     else {
       UIAlertView *newInitiationAlertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Add %@ Behavior", [self n:type.name]] message:@"What should the behavior be called?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
@@ -540,8 +549,10 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-  [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageUrl = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
+  CAGInitiation *behavior = [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior];
+  behavior.imageUrl = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
   [self.imagePicker dismissPopoverAnimated:YES];
+  [self showBehaviorImage:behavior];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -616,11 +627,31 @@
 - (IBAction)chooseBehaviorImage:(id)sender
 {
   NSLog(@"choose behavior image");
+  if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypePhotoLibrary]) {
+    [[[UIAlertView alloc] initWithTitle:@"No Photos?" message:@"It looks like you don't have any photos, or your device is not capable of storing any. If you're asked to let this app access your photos please press yes or this feature will not work." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    return;
+  }
+  if (!self.imagePicker) {
+    UIImagePickerController *mediaUI = [[UIImagePickerController alloc] init];
+    mediaUI.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    mediaUI.mediaTypes =
+    [UIImagePickerController availableMediaTypesForSourceType:
+     UIImagePickerControllerSourceTypePhotoLibrary];
+    mediaUI.allowsEditing = NO;
+    mediaUI.delegate = self;
+    self.imagePicker = [[UIPopoverController alloc] initWithContentViewController:mediaUI];
+  }
+  CGRect buttonLocation = [self.view convertRect:self.editImageButton.frame fromView:self.editImageButton.superview];
+  [self.imagePicker presentPopoverFromRect:buttonLocation inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 }
 
 - (IBAction)deleteBehaviorImage:(id)sender
 {
   NSLog(@"delete behavior image");
+  CAGInitiation *behavior = [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior];
+  behavior.imageUrl = nil;
+  behavior.imageSize = 0;
+  [self showBehaviorImage:behavior];
 }
 
 - (IBAction)behaviorImageSizeChanged:(id)sender
@@ -666,6 +697,120 @@
   [self.behaviorTableView reloadData];
   [self.responseTableView reloadData];
   [self.participantPicker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)showBehaviorImage:(CAGInitiation *)behavior
+{
+  if (!behavior.imageUrl) {
+    // no image, show the default
+    self.behaviorImageView.image = nil;
+    return;
+  }
+  ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myAsset)
+  {
+    UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:500];
+    self.behaviorImage = image;
+    self.behaviorImageView.image = image;
+  };
+  
+  ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
+  {
+    NSLog(@"Image access error: %@", [myerror localizedDescription]);
+  };
+  
+  ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+  [assetslibrary assetForURL:behavior.imageUrl
+                 resultBlock:resultblock
+                failureBlock:failureblock];
+}
+
+// Helper methods for thumbnailForAsset:maxPixelSize:
+static size_t getAssetBytesCallback(void *info, void *buffer, off_t position, size_t count) {
+  ALAssetRepresentation *rep = (__bridge id)info;
+  
+  NSError *error = nil;
+  size_t countRead = [rep getBytes:(uint8_t *)buffer fromOffset:position length:count error:&error];
+  
+  if (countRead == 0 && error) {
+    // We have no way of passing this info back to the caller, so we log it, at least.
+    NSLog(@"thumbnailForAsset:maxPixelSize: got an error reading an asset: %@", error);
+  }
+  
+  return countRead;
+}
+
+static void releaseAssetCallback(void *info) {
+  // The info here is an ALAssetRepresentation which we CFRetain in thumbnailForAsset:maxPixelSize:.
+  // This release balances that retain.
+  CFRelease(info);
+}
+
+// Returns a UIImage for the given asset, with size length at most the passed size.
+// The resulting UIImage will be already rotated to UIImageOrientationUp, so its CGImageRef
+// can be used directly without additional rotation handling.
+// This is done synchronously, so you should call this method on a background queue/thread.
+- (UIImage *)thumbnailForAsset:(ALAsset *)asset maxPixelSize:(NSUInteger)size
+{
+  NSParameterAssert(asset != nil);
+  NSParameterAssert(size > 0);
+  
+  ALAssetRepresentation *rep = [asset defaultRepresentation];
+  
+  CGDataProviderDirectCallbacks callbacks = {
+    .version = 0,
+    .getBytePointer = NULL,
+    .releaseBytePointer = NULL,
+    .getBytesAtPosition = getAssetBytesCallback,
+    .releaseInfo = releaseAssetCallback,
+  };
+  
+  CGDataProviderRef provider = CGDataProviderCreateDirect((void *)CFBridgingRetain(rep), [rep size], &callbacks);
+  CGImageSourceRef source = CGImageSourceCreateWithDataProvider(provider, NULL);
+  
+  CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef) @{
+    (NSString *)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+    (NSString *)kCGImageSourceThumbnailMaxPixelSize : [NSNumber numberWithUnsignedInteger:size],
+    (NSString *)kCGImageSourceCreateThumbnailWithTransform : @YES,
+  });
+  CFRelease(source);
+  CFRelease(provider);
+  
+  if (!imageRef) {
+    return nil;
+  }
+  
+  UIImage *toReturn = [UIImage imageWithCGImage:imageRef];
+  
+  CFRelease(imageRef);
+  
+  return toReturn;
+}
+
+- (IBAction)lockApp:(id)sender
+{
+  NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+  bool locked = [[standardDefaults objectForKey:@"locked"] boolValue];
+  if (locked) {
+    [standardDefaults setObject:[NSNumber numberWithBool:NO] forKey:@"locked"];
+    self.lockButton.titleLabel.text = @"Unlocked";
+    [self.lockButton setTitle:@"Unlocked" forState:UIControlStateNormal];
+  }
+  else {
+    [standardDefaults setObject:[NSNumber numberWithBool:YES] forKey:@"locked"];
+    [self.lockButton setTitle:@"Locked" forState:UIControlStateNormal];
+    [self showLockScreen];
+  }
+  [standardDefaults synchronize];
+  if (showIt123) {
+    [[[UIAlertView alloc] initWithTitle:@"Feature Not Finished..." message:@"Haven't decided what to do with this yet..." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    showIt123 = NO;
+  }
+}
+bool showIt123 = YES;
+
+- (void)showLockScreen
+{
+  NSLog(@"locked! ;)");
 }
 
 @end

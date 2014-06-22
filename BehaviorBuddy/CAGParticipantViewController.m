@@ -99,38 +99,52 @@
   }
   else if (tableView == self.actionTableView) {
     BOOL available = [[[self.participant getSessionAtIndex:self.sessionIndex] getSettingAtIndex:self.settingIndex] getAvailabilityForInitiationAtIndex:indexPath.row initiationType:[self.participant getInitiationTypeAtIndex:self.selectedInitiationType]];
-    return available ? [[self.participant getInitiationTypeAtIndex:self.selectedInitiationType] getInitiationAtIndex:indexPath.row].imageUrl ? 500 : 100 : 1;
+    CAGInitiation *behavior = [[self.participant getInitiationTypeAtIndex:self.selectedInitiationType] getInitiationAtIndex:indexPath.row];
+    CGFloat size = available ? behavior.imageUrl ? ceil(166.6666*(1+behavior.imageSize)) : 100 : 1;
+    NSLog(@"size: %f", size);
+    return size;
   }
   return 44;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if (tableView == self.typeTableView) {
-    CAGTypeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TypeCell" forIndexPath:indexPath];
-    CAGInitiationType *type = [self.participant getInitiationTypeAtIndex:indexPath.row];
-    [cell setType:type];
-      NSLog(@"type: %@", type.name);
-    [cell setProgress:[[[self.participant getSessionAtIndex:self.sessionIndex] getSettingAtIndex:self.settingIndex] getCompletionPercentageForInitiationType:type]];
-    
-    [cell setSelected:indexPath.row == self.selectedInitiationType animated:NO];
-    return cell;
+    return [tableView dequeueReusableCellWithIdentifier:@"TypeCell" forIndexPath:indexPath];
   }
   else if (tableView == self.actionTableView) {
-    CAGActionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ActionCell" forIndexPath:indexPath];
-    [cell setCellColor:[self.participant getInitiationTypeAtIndex:self.selectedInitiationType].color];
-    [cell setCellInitiation:[[self.participant getInitiationTypeAtIndex:self.selectedInitiationType] getInitiationAtIndex:indexPath.row]];
-    BOOL available = [[[self.participant getSessionAtIndex:self.sessionIndex] getSettingAtIndex:self.settingIndex] getAvailabilityForInitiationAtIndex:indexPath.row initiationType:[self.participant getInitiationTypeAtIndex:self.selectedInitiationType]];
-    cell.hidden = !available;
-    for (NSIndexPath *performedIndexPath in self.performedActions) {
-      if (self.selectedInitiationType == performedIndexPath.section && indexPath.row == performedIndexPath.row) {
-        [cell setCellFinished:YES];
-        return cell;
-      }
-    }
-    [cell setCellFinished:NO];
-    return cell;
+    return [tableView dequeueReusableCellWithIdentifier:@"ActionCell" forIndexPath:indexPath];
   }
   return nil;
+}
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (tableView == self.typeTableView) {
+    CAGTypeTableViewCell *typeCell = (CAGTypeTableViewCell *) cell;
+    CAGInitiationType *type = [self.participant getInitiationTypeAtIndex:indexPath.row];
+    [typeCell setType:type];
+    NSLog(@"type: %@", type.name);
+    CGFloat progress = [[[self.participant getSessionAtIndex:self.sessionIndex] getSettingAtIndex:self.settingIndex] getCompletionPercentageForInitiationType:type];
+    [typeCell setProgress:progress];
+    [typeCell setSelected:indexPath.row == self.selectedInitiationType animated:NO];
+  }
+  else if (tableView == self.actionTableView) {
+    CAGActionTableViewCell *actionCell = (CAGActionTableViewCell *) cell;
+    [actionCell setCellColor:[self.participant getInitiationTypeAtIndex:self.selectedInitiationType].color];
+    [actionCell setCellInitiation:[[self.participant getInitiationTypeAtIndex:self.selectedInitiationType] getInitiationAtIndex:indexPath.row]];
+    bool available = [[[self.participant getSessionAtIndex:self.sessionIndex] getSettingAtIndex:self.settingIndex] getAvailabilityForInitiationAtIndex:indexPath.row initiationType:[self.participant getInitiationTypeAtIndex:self.selectedInitiationType]];
+    cell.hidden = !available;
+    bool finished = NO;
+    for (NSIndexPath *performedIndexPath in self.performedActions) {
+      if (self.selectedInitiationType == performedIndexPath.section && indexPath.row == performedIndexPath.row) {
+        [actionCell setCellFinished:YES];
+        finished = YES;
+        break;
+      }
+    }
+    if (!finished) {
+      [actionCell setCellFinished:NO];
+    }
+  }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

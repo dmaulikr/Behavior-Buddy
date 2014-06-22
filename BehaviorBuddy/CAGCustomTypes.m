@@ -201,7 +201,7 @@
 
 - (BOOL)getAvailabilityForInitiationAtIndex:(NSUInteger)index initiationType:(CAGInitiationType *)initiationType
 {
-  return ![self.hiddenInitiations objectForKey:[NSString stringWithFormat:@"%@,%luu", initiationType.name, (unsigned long)index]];
+  return ![self.hiddenInitiations objectForKey:[NSString stringWithFormat:@"%@,%lu", initiationType.name, (unsigned long)index]];
 }
 
 - (NSUInteger)getNumInitiationsRequiredForInitiationType:(CAGInitiationType *)initiationType
@@ -519,6 +519,14 @@
     _sessions = [decoder decodeObjectForKey:@"sessions"];
   }
   return self;
+}
+
+@end
+
+@implementation UIImagePickerController(Nonrotating)
+
+- (BOOL)shouldAutorotate {
+  return NO;
 }
 
 @end

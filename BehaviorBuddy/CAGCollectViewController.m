@@ -232,7 +232,17 @@
       UIButton *edit = (UIButton *)[cell viewWithTag:TABLE_VIEW_CELL_EDIT_TAG];
       UIButton *delete = (UIButton *)[cell viewWithTag:TABLE_VIEW_CELL_DELETE_TAG];
       
-      label.text = [[[self gcp] getSessionAtIndex:self.currentSession] getSettingAtIndex:indexPath.row].name;
+      CAGSetting *setting = [[[self gcp] getSessionAtIndex:self.currentSession] getSettingAtIndex:indexPath.row];
+      if (setting.finished) {
+        label.text = [NSString stringWithFormat:@"(finished) %@", setting.name];
+        label.textColor = [UIColor lightGrayColor];
+        cell.userInteractionEnabled = NO;
+      }
+      else {
+        label.text = setting.name;
+        label.textColor = [UIColor blackColor];
+        cell.userInteractionEnabled = YES;
+      }
       bool selected = indexPath.row == self.currentSetting;
       edit.hidden = !selected;
       delete.hidden = !selected;
@@ -249,6 +259,13 @@
       
       nameLabel.text = initiationTypeName;
       requiredLabel.text = [NSString stringWithFormat:@"(%lu/%lu Required)", (unsigned long)numRequired, (unsigned long)numAvailable];
+      
+//      if (self.currentSettingFinished) {
+//        cell.userInteractionEnabled = nameLabel.enabled = requiredLabel.enabled = NO;
+//      }
+//      else {
+//        cell.userInteractionEnabled = nameLabel.enabled = requiredLabel.enabled = YES;
+//      }
     }
     else if (indexPath.section <= [self gcp].initiationTypes.count) {
       NSUInteger initiationType = indexPath.section - 1;
@@ -262,6 +279,13 @@
       else {
         image.image = self.xImage;
       }
+      
+//      if (self.currentSettingFinished) {
+//        cell.userInteractionEnabled = label.enabled = NO;
+//      }
+//      else {
+//        cell.userInteractionEnabled = label.enabled = YES;
+//      }
     }
   }
 }
@@ -318,63 +342,6 @@
       [self.reqsTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
   }
-//  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//  if (tableView == _sessionTableView) {
-//    self.currentParticipant = indexPath;
-//    self.currentSetting = nil;
-//    [self.settingTableView reloadData];
-//    [self.reqsTableView reloadData];
-//  }
-//  else if (tableView == _settingTableView) {
-//    if (indexPath.section < [self gcp].sessions.count) {
-//      if (indexPath.row < [[self gcp] getSessionAtIndex:indexPath.section].settings.count) {
-//        self.currentSetting = indexPath;
-//        [self.reqsTableView reloadData];
-//      }
-//      else {
-//        self.currentSession = indexPath;
-//        UIAlertView *newSetting = [[UIAlertView alloc] initWithTitle:@"New Setting" message:@"What should this new setting be called?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Create", nil];
-//        newSetting.tag = ALERT_VIEW_NEW_SETTING;
-//        newSetting.alertViewStyle = UIAlertViewStylePlainTextInput;
-//        [newSetting show];
-//      }
-//    }
-//    else {
-//      UIAlertView *newSession = [[UIAlertView alloc] initWithTitle:@"New Session" message:@"What should this session be called?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Create", nil];
-//      newSession.tag = ALERT_VIEW_NEW_SESSION;
-//      newSession.alertViewStyle = UIAlertViewStylePlainTextInput;
-//      [newSession show];
-//    }
-//  }
-//  else if (tableView == _reqsTableView) {
-//    if (indexPath.section == 0) {
-//      NSString *initiationTypeName = [[self gcp] getInitiationTypeAtIndex:indexPath.row].name;
-//      NSInteger numAvailable = [[self gcp] getInitiationTypeAtIndex:indexPath.row].initiations.count;
-//      UIAlertView *numInitiations = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ Behaviors", initiationTypeName] message:[NSString stringWithFormat:@"How many should be required in this setting? You can require between 0 and %lu to be performed.", (long) numAvailable] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-//      numInitiations.tag = ALERT_VIEW_INITIATIONS_REQUIRED;
-//      numInitiations.alertViewStyle = UIAlertViewStylePlainTextInput;
-//      [numInitiations show];
-//    }
-//    else if (indexPath.section <= [self gcp].initiationTypes.count) {
-//      NSUInteger index = indexPath.row;
-//      CAGInitiationType *type = [[self gcp] getInitiationTypeAtIndex:indexPath.section-1];
-//      BOOL availability = ![[[[self gcp] getSessionAtIndex:self.currentSetting.section] getSettingAtIndex:self.currentSetting.row] getAvailabilityForInitiationAtIndex:index initiationType:type];
-//      [[[[self gcp] getSessionAtIndex:self.currentSetting.section] getSettingAtIndex:self.currentSetting.row] setAvailability:availability forInitiationAtIndex:index initiationType:type];
-//      [self.reqsTableView reloadData];
-//    }
-//    else if (indexPath.section == [self gcp].initiationTypes.count + 1) {
-//      if (!self.participantView) {
-//        self.participantView = [[[NSBundle mainBundle] loadNibNamed:@"CAGParticipantViewController" owner:self options:nil] objectAtIndex:0];
-//      }
-//      [self.participantView prepareParticipant:[self gcp] withIndex:self.currentParticipant.row forSession:self.currentSetting.section inSetting:self.currentSetting.row];
-//      UINavigationController* navVC = [[UINavigationController alloc] initWithRootViewController:self.participantView];
-//      navVC.modalPresentationStyle = UIModalPresentationFullScreen;
-//      [self presentViewController:navVC animated:YES completion:nil];
-//    }
-//  }
-//  else {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//  }
 }
 
 - (void)recordBehaviorViewDiscard:(CAGRecordBehaviorView *)rbView

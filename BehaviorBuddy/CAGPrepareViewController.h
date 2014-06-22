@@ -10,9 +10,11 @@
 @property IBOutlet UITableView *responseTableView;
 @property IBOutlet UIView *behaviorImageContainer;
 @property IBOutlet UILabel *behaviorImageName;
-@property IBOutlet UIImageView *behaviorImage;
+@property IBOutlet UIImageView *behaviorImageView;
 @property IBOutlet UISegmentedControl *behaviorImageSizeControl;
 @property IBOutlet UIView *behaviorImageContainerBackground;
 @property IBOutlet UILabel *currentParticipantNameLabel;
+@property IBOutlet UIButton *editImageButton;
+@property IBOutlet UIButton *lockButton;
 
 @end

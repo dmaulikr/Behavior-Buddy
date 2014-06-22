@@ -58,6 +58,8 @@
   }
   self.progressView.color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
   self.selectedView.backgroundColor = type.color;
+  NSLog(@"color: %@", self.progressView.color);
+  NSLog(@"bcolor: %@", self.selectedView.backgroundColor);
   [self setTypeName:type.name];
 }
 
@@ -66,6 +68,7 @@
   _typeName = name;
   self.typeNameLabel.textColor = [UIColor whiteColor];
   self.typeNameLabel.text = name;
+  NSLog(@"name: %@", name);
 }
 
 - (void)setProgress:(CGFloat)progress

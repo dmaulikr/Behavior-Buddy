@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="6154.17" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6153.11"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CAGChooseParticipantViewController">
@@ -17,31 +17,25 @@
             <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Who are you working with?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zdd-3U-tBy">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Who are you working with?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zdd-3U-tBy">
                     <rect key="frame" x="20" y="52" width="500" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="42" id="Hkc-OE-VPl"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="l18-f7-xKF">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="l18-f7-xKF">
                     <rect key="frame" x="20" y="102" width="500" height="460"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="pX3-7T-iMC"/>
                         <outlet property="delegate" destination="-1" id="hdQ-pq-2cj"/>
                     </connections>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5a0-UP-LrT">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5a0-UP-LrT">
                     <rect key="frame" x="274" y="570" width="246" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="wy4-nm-1Vj"/>
-                    </constraints>
                     <state key="normal" title="Start">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -49,12 +43,9 @@
                         <action selector="start:" destination="-1" eventType="touchUpInside" id="EH0-83-0x3"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LPZ-8K-UcF">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LPZ-8K-UcF">
                     <rect key="frame" x="20" y="570" width="246" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="246" id="4jn-sE-dqM"/>
-                    </constraints>
                     <state key="normal" title="New Participant">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -62,33 +53,13 @@
                         <action selector="newParticipant:" destination="-1" eventType="touchUpInside" id="chw-ZV-yfd"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wu3-fK-DRh">
+                <view contentMode="scaleToFill" id="Wu3-fK-DRh">
                     <rect key="frame" x="0.0" y="0.0" width="540" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="ZYH-lc-iB3"/>
-                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="5a0-UP-LrT" firstAttribute="leading" secondItem="LPZ-8K-UcF" secondAttribute="trailing" constant="8" symbolic="YES" id="4E8-a8-lRR"/>
-                <constraint firstItem="Zdd-3U-tBy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="Evr-yu-oWU"/>
-                <constraint firstAttribute="trailing" secondItem="Wu3-fK-DRh" secondAttribute="trailing" id="Gs9-9Q-N90"/>
-                <constraint firstItem="Wu3-fK-DRh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="HiV-IT-dOM"/>
-                <constraint firstItem="LPZ-8K-UcF" firstAttribute="baseline" secondItem="5a0-UP-LrT" secondAttribute="baseline" id="Jjl-9L-f6N"/>
-                <constraint firstAttribute="trailing" secondItem="l18-f7-xKF" secondAttribute="trailing" constant="20" id="LZX-iC-Tak"/>
-                <constraint firstAttribute="bottom" secondItem="5a0-UP-LrT" secondAttribute="bottom" constant="20" id="LeH-ff-W4y"/>
-                <constraint firstItem="Zdd-3U-tBy" firstAttribute="top" secondItem="Wu3-fK-DRh" secondAttribute="bottom" constant="8" id="RPg-es-jYA"/>
-                <constraint firstItem="LPZ-8K-UcF" firstAttribute="top" secondItem="l18-f7-xKF" secondAttribute="bottom" constant="8" id="T38-wI-iEG"/>
-                <constraint firstItem="LPZ-8K-UcF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="WI7-m1-FtM"/>
-                <constraint firstAttribute="trailing" secondItem="5a0-UP-LrT" secondAttribute="trailing" constant="20" id="bgM-qk-Ste"/>
-                <constraint firstItem="l18-f7-xKF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="chl-sR-qVs"/>
-                <constraint firstAttribute="trailing" secondItem="Zdd-3U-tBy" secondAttribute="trailing" constant="20" id="fN9-pc-pPo"/>
-                <constraint firstItem="Wu3-fK-DRh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="m0g-Rf-pnc"/>
-                <constraint firstItem="l18-f7-xKF" firstAttribute="top" secondItem="Zdd-3U-tBy" secondAttribute="bottom" constant="8" id="oz3-8D-ySe"/>
-            </constraints>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
             <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

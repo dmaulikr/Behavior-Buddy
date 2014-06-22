@@ -100,3 +100,7 @@
 - (CAGSession *)removeSessionAtIndex:(NSUInteger)index;
 
 @end
+
+@interface UIImagePickerController(Nonrotating)
+- (BOOL)shouldAutorotate;
+@end
