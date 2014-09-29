@@ -43,9 +43,16 @@
   
   ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myAsset)
   {
-    UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:350*(1+self.initiation.imageSize)];
-    self.actionImage = image;
-    self.actionImageView.image = image;
+    if (myAsset) {
+      UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:350*(1+self.initiation.imageSize)];
+      self.actionImage = image;
+      self.actionImageView.image = image;
+    } else {
+      // don't have this image anymore
+      self.initiation.imageUrl = nil;
+      self.actionImage = nil;
+      self.actionImageView.image = nil;
+    }
   };
   
   ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
@@ -124,6 +131,7 @@ static void releaseAssetCallback(void *info) {
 - (void)setCellColor:(UIColor *)color
 {
   self.colorView.backgroundColor = color;
+  self.finishedCheck.textColor = color;
 }
 
 - (void)setCellFinished:(BOOL)finished

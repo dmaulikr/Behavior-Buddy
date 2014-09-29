@@ -20,6 +20,7 @@
 #define ALERT_VIEW_SET_PASSWORD         ((int) 110)
 #define ALERT_VIEW_SET_PASSWORD_CONFIRM ((int) 111)
 #define ALERT_VIEW_LOCK_APP             ((int) 112)
+#define ALERT_VIEW_UNLOCK_APP           ((int) 118)
 #define TABLE_VIEW_CELL_EDIT_TAG        ((int) 113)
 #define TABLE_VIEW_CELL_COLOR_TAG       ((int) 114)
 #define TABLE_VIEW_CELL_DELETE_TAG      ((int) 115)
@@ -43,6 +44,7 @@
 @property BOOL choosingTypeColor;
 @property UIColor *blueColor;
 @property UIImage *behaviorImage;
+@property NSString *firstPassword;
 
 @end
 
@@ -70,10 +72,6 @@
   [super viewDidLoad];
   self.blueColor = [UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:1.0];
   
-  self.greyCoverView = [[UIView alloc] initWithFrame:self.view.frame];
-  [self.greyCoverView setBackgroundColor:[UIColor blackColor]];
-  self.greyCoverView.alpha = 0.0;
-  
   self.behaviorTypeTableView.layer.borderWidth = 0.5;
   self.behaviorTypeTableView.layer.borderColor = [self.blueColor CGColor];
   self.behaviorTableView.layer.borderWidth = 0.5;
@@ -84,6 +82,11 @@
   self.behaviorImageContainerBackground.layer.borderColor = [self.blueColor CGColor];
   
   self.currentParticipant = NO_CURRENT;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [self checkAppLock];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -464,8 +467,10 @@
     case ALERT_VIEW_NEW_INITIATION:
       if (buttonIndex == 1 && ![[alertView textFieldAtIndex:0].text isEqualToString:@""]) {
         [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] addInitiation:[[CAGInitiation alloc] initWithName:[alertView textFieldAtIndex:0].text]];
+        self.currentBehavior = [[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType].initiations.count-1;
+        self.currentResponse = NO_CURRENT;
+        [self showBehaviorImage:nil];
       }
-      self.currentBehavior = [[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType].initiations.count-1;
       [self.behaviorTableView reloadData];
       [self.responseTableView reloadData];
       break;
@@ -481,6 +486,7 @@
     case ALERT_VIEW_NEW_RESPONSE:
       if (buttonIndex == 1 && ![[alertView textFieldAtIndex:0].text isEqualToString:@""]) {
         [[[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior] addResponse:[[CAGResponse alloc] initWithName:[alertView textFieldAtIndex:0].text]];
+        self.currentResponse = [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].responses.count-1;
       }
       [self.responseTableView reloadData];
       break;
@@ -520,6 +526,29 @@
         self.currentResponse = NO_CURRENT;
         [self.responseTableView reloadData];
       }
+      break;
+      
+    case ALERT_VIEW_LOCK_APP:
+      if (buttonIndex == 1) { // same
+        [self lockAppForReal:[[NSUserDefaults standardUserDefaults] stringForKey:@"lockPassword"]];
+      } else if (buttonIndex == 2) { // new
+        [self requestNewPassword];
+      }
+      break;
+      
+    case ALERT_VIEW_SET_PASSWORD:
+      self.firstPassword = [alertView textFieldAtIndex:0].text;
+      [self confirmNewPassword];
+      break;
+      
+    case ALERT_VIEW_SET_PASSWORD_CONFIRM:
+      if ([self.firstPassword isEqualToString:[alertView textFieldAtIndex:0].text]) {
+        [self lockAppForReal:self.firstPassword];
+      }
+      break;
+      
+    case ALERT_VIEW_UNLOCK_APP:
+      [self checkPassword:[alertView textFieldAtIndex:0].text];
       break;
   }
 }
@@ -708,9 +737,17 @@
   }
   ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myAsset)
   {
-    UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:500];
-    self.behaviorImage = image;
-    self.behaviorImageView.image = image;
+    if (myAsset) {
+      UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:500];
+      self.behaviorImage = image;
+      self.behaviorImageView.image = image;
+    } else {
+      [[[UIAlertView alloc] initWithTitle:@"Sorry..." message:@"The image you selected for this behavior wasn't found. Please edit the image and choose a new one." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+      self.behaviorImage = nil;
+      self.behaviorImageView.image = nil;
+      [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageUrl = nil;
+      [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageSize = 0;
+    }
   };
   
   ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
@@ -786,31 +823,101 @@ static void releaseAssetCallback(void *info) {
   return toReturn;
 }
 
-- (IBAction)lockApp:(id)sender
+- (IBAction)lockApp:(id)sender /*!!!!!!!!!!!!!!!!!! implement lock app !!!!!!!!!!!!!!!!!!*/
 {
-  NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
-  bool locked = [[standardDefaults objectForKey:@"locked"] boolValue];
-  if (locked) {
-    [standardDefaults setObject:[NSNumber numberWithBool:NO] forKey:@"locked"];
-    self.lockButton.titleLabel.text = @"Unlocked";
-    [self.lockButton setTitle:@"Unlocked" forState:UIControlStateNormal];
-  }
-  else {
-    [standardDefaults setObject:[NSNumber numberWithBool:YES] forKey:@"locked"];
-    [self.lockButton setTitle:@"Locked" forState:UIControlStateNormal];
-    [self showLockScreen];
-  }
-  [standardDefaults synchronize];
-  if (showIt123) {
-    [[[UIAlertView alloc] initWithTitle:@"Feature Not Finished..." message:@"Haven't decided what to do with this yet..." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    showIt123 = NO;
+  NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"lockPassword"];
+  if (password) {
+    [self confirmExistingPassword];
+  } else {
+    [self requestNewPassword];
   }
 }
-bool showIt123 = YES;
 
-- (void)showLockScreen
+- (void)checkAppLock
 {
-  NSLog(@"locked! ;)");
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"locked"]) {
+    [self lockScreen:YES];
+  }
+}
+
+- (void)confirmExistingPassword {
+  UIAlertView *confirmpasswordAlert = [[UIAlertView alloc] initWithTitle:@"Lock Behavior Buddy" message:@"Would you like to use the same password as last time, or create a new one?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Same", @"New", nil];
+  confirmpasswordAlert.tag = ALERT_VIEW_LOCK_APP;
+  [confirmpasswordAlert show];
+}
+
+- (void)requestNewPassword
+{
+  UIAlertView *passwordRequestAlert = [[UIAlertView alloc] initWithTitle:@"Lock Behavior Buddy" message:@"Please choose a password to lock the app." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+  passwordRequestAlert.tag = ALERT_VIEW_SET_PASSWORD;
+  passwordRequestAlert.alertViewStyle = UIAlertViewStyleSecureTextInput;
+  [passwordRequestAlert show];
+}
+
+- (void)confirmNewPassword {
+  UIAlertView *passwordRequestAlert = [[UIAlertView alloc] initWithTitle:@"Lock Behavior Buddy" message:@"Please confirm your password." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm", nil];
+  passwordRequestAlert.tag = ALERT_VIEW_SET_PASSWORD_CONFIRM;
+    passwordRequestAlert.alertViewStyle = UIAlertViewStyleSecureTextInput;
+  [passwordRequestAlert show];
+}
+
+- (void)lockAppForReal:(NSString *)password
+{
+  NSLog(@"locked!");
+  [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"lockPassword"];
+  [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"locked"];
+  [self lockScreen:NO];
+}
+
+- (void)lockScreen:(BOOL)fast
+{
+  NSLog(@"screen hidden!");
+  if (!self.greyCoverView) {
+    self.greyCoverView = [[UIView alloc] initWithFrame:self.view.frame];
+    [self.greyCoverView setBackgroundColor:[UIColor blackColor]];
+    self.greyCoverView.alpha = 0.0;
+  }
+  [self.view addSubview:self.greyCoverView];
+  [UIView animateWithDuration:fast?0:1 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+    self.greyCoverView.alpha = 1;
+  } completion:^(BOOL finished ) {
+    [self showPasswordInput];
+  }];
+}
+
+- (void)showPasswordInput {[self showPasswordInput:nil];};
+- (void)showPasswordInput:(NSString *)title
+{
+  UIAlertView *passwordInput = [[UIAlertView alloc] initWithTitle:title?title:@"Locked" message:@"Please enter your password to unlock." delegate:self cancelButtonTitle:@"Unlock" otherButtonTitles:nil];
+  passwordInput.alertViewStyle = UIAlertViewStyleSecureTextInput;
+  passwordInput.tag = ALERT_VIEW_UNLOCK_APP;
+  [passwordInput show];
+}
+
+- (void)checkPassword:(NSString *)attemptedPassword
+{
+  NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"lockPassword"];
+  if (!password) {
+    [self unlockScreen];
+    return;
+  }
+  if (attemptedPassword) {
+    if ([attemptedPassword isEqualToString:password]) {
+      [self unlockScreen];
+      return;
+    }
+  }
+  [self showPasswordInput:@"Wrong Password"];
+}
+
+- (void)unlockScreen
+{
+  [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^(void) {
+    self.greyCoverView.alpha = 0;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"locked"];
+  } completion:^(BOOL finished ) {
+    [self.greyCoverView removeFromSuperview];
+  }];
 }
 
 @end

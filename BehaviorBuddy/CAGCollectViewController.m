@@ -427,6 +427,7 @@
       if (![[alertView textFieldAtIndex:0].text isEqualToString:@""]) {
         NSInteger numRequired = [[alertView textFieldAtIndex:0].text integerValue];
         NSInteger numAvailable = [[self gcp] getInitiationTypeAtIndex:self.selectedBehaviorType].initiations.count;
+        numRequired = MIN(MAX(0, numRequired),numAvailable);
         if (numRequired >= 0 && numRequired <= numAvailable) {
           [[[[self gcp] getSessionAtIndex:self.currentSession] getSettingAtIndex:self.currentSetting] setNumInitiationsRequired:numRequired initiationType:[[self gcp] getInitiationTypeAtIndex:self.selectedBehaviorType]];
         }

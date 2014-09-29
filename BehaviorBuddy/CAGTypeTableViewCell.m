@@ -38,7 +38,7 @@
   self.progressView.showBackgroundInnerShadow = @NO;
   self.progressView.outerStrokeWidth = @0;
   self.progressView.type = LDProgressSolid;
-  [self insertSubview:self.progressView belowSubview:self.typeNameLabel];
+  [self insertSubview:self.progressView atIndex:0];
 }
 
 - (void)setType:(CAGInitiationType *)type
@@ -58,6 +58,7 @@
   }
   self.progressView.color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
   self.selectedView.backgroundColor = type.color;
+  self.finishedCheck.textColor = type.color;
   NSLog(@"color: %@", self.progressView.color);
   NSLog(@"bcolor: %@", self.selectedView.backgroundColor);
   [self setTypeName:type.name];
@@ -79,18 +80,7 @@
   else if (progress > 1) {
     progress = 1;
   }
-  if (progress == 1) {
-    self.finishedCheck.hidden = NO;
-    self.selectedView.alpha = 0.5;
-    self.typeNameLabel.alpha = 0.5;
-    self.progressView.alpha = 0.5;
-  }
-  else {
-    self.finishedCheck.hidden = YES;
-    self.selectedView.alpha = 1;
-    self.typeNameLabel.alpha = 1;
-    self.progressView.alpha = 1;
-  }
+  self.finishedCheck.hidden = progress != 1;
   self.progressView.progress = progress;
 }
 
