@@ -146,6 +146,13 @@
     }
   }
 }
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (tableView == self.actionTableView) {
+    CAGActionTableViewCell *actionCell = (CAGActionTableViewCell *) cell;
+    [actionCell cellStoppedDisplaying];
+  }
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if (tableView == self.typeTableView) {
@@ -203,7 +210,7 @@
   [self.performedActions addObject:[NSIndexPath indexPathForRow:self.selectedAction inSection:self.selectedInitiationType]];
   [self.typeTableView reloadData];
   [self.typeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedInitiationType inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-  [self.actionTableView reloadData];
+  [self.actionTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.selectedAction inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
   [self.disabledActions setObject:[NSNumber numberWithBool:YES] forKey:[NSString stringWithFormat:@"%lu,%lu", (long) self.selectedAction, (long) self.selectedInitiationType]];
   if (view) {
     CGRect frame = view.frame;

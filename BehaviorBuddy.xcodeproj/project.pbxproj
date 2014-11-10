@@ -37,6 +37,9 @@
 		F5AB95FA194AA10100713E28 /* ColorsImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95F8194AA10100713E28 /* ColorsImage@2x.png */; };
 		F5AB95FD194AAF6700713E28 /* TrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95FB194AAF6700713E28 /* TrashCan.png */; };
 		F5AB95FE194AAF6700713E28 /* TrashCan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5AB95FC194AAF6700713E28 /* TrashCan@2x.png */; };
+		F5CB86A01A10545A007364B0 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5CB869F1A10545A007364B0 /* AVKit.framework */; };
+		F5CB86A31A10B775007364B0 /* BlackBox.png in Resources */ = {isa = PBXBuildFile; fileRef = F5CB86A11A10B775007364B0 /* BlackBox.png */; };
+		F5CB86A41A10B775007364B0 /* BlackBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5CB86A21A10B775007364B0 /* BlackBox@2x.png */; };
 		F5D2575318E10D4D00AF21F7 /* CAGCustomTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D2575218E10D4D00AF21F7 /* CAGCustomTypes.m */; };
 		F5D2576818E243AD00AF21F7 /* colorPicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F5D2575518E243AD00AF21F7 /* colorPicker.bundle */; };
 		F5D2576918E243AD00AF21F7 /* NEOColorPickerBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D2575718E243AD00AF21F7 /* NEOColorPickerBaseViewController.m */; };
@@ -113,6 +116,7 @@
 		F530AB6418C0A82700B4CFE7 /* CAGRecordBehaviorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAGRecordBehaviorView.h; sourceTree = "<group>"; };
 		F530AB6518C0A82700B4CFE7 /* CAGRecordBehaviorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAGRecordBehaviorView.m; sourceTree = "<group>"; };
 		F530AB6718C0A83F00B4CFE7 /* CAGRecordBehaviorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAGRecordBehaviorView.xib; sourceTree = "<group>"; };
+		F5912DE11A0F021800B65EF5 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		F59E27C3192FCE3900147641 /* PlusImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlusImage.png; sourceTree = "<group>"; };
 		F59E27C4192FCE3900147641 /* PlusImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlusImage@2x.png"; sourceTree = "<group>"; };
 		F59E27C71930454500147641 /* EditImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditImage.png; sourceTree = "<group>"; };
@@ -125,6 +129,9 @@
 		F5AB95F8194AA10100713E28 /* ColorsImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ColorsImage@2x.png"; sourceTree = "<group>"; };
 		F5AB95FB194AAF6700713E28 /* TrashCan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrashCan.png; sourceTree = "<group>"; };
 		F5AB95FC194AAF6700713E28 /* TrashCan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrashCan@2x.png"; sourceTree = "<group>"; };
+		F5CB869F1A10545A007364B0 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		F5CB86A11A10B775007364B0 /* BlackBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlackBox.png; sourceTree = "<group>"; };
+		F5CB86A21A10B775007364B0 /* BlackBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlackBox@2x.png"; sourceTree = "<group>"; };
 		F5D2575118E10D4D00AF21F7 /* CAGCustomTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAGCustomTypes.h; sourceTree = "<group>"; };
 		F5D2575218E10D4D00AF21F7 /* CAGCustomTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAGCustomTypes.m; sourceTree = "<group>"; };
 		F5D2575518E243AD00AF21F7 /* colorPicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = colorPicker.bundle; sourceTree = "<group>"; };
@@ -187,6 +194,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5CB86A01A10545A007364B0 /* AVKit.framework in Frameworks */,
 				F504147A18B8767D00787B21 /* CoreGraphics.framework in Frameworks */,
 				F504147C18B8767D00787B21 /* UIKit.framework in Frameworks */,
 				F504147818B8767D00787B21 /* Foundation.framework in Frameworks */,
@@ -228,6 +236,8 @@
 		F504147618B8767D00787B21 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F5CB869F1A10545A007364B0 /* AVKit.framework */,
+				F5912DE11A0F021800B65EF5 /* Photos.framework */,
 				F504147718B8767D00787B21 /* Foundation.framework */,
 				F504147918B8767D00787B21 /* CoreGraphics.framework */,
 				F504147B18B8767D00787B21 /* UIKit.framework */,
@@ -274,6 +284,8 @@
 				F5EB7D3719452D6100ACEB45 /* CAGChooseParticipantTableViewCell.m */,
 				F5EB7D3819452D6100ACEB45 /* CAGChooseParticipantTableViewCell.xib */,
 				F504149518B8767D00787B21 /* Images.xcassets */,
+				F5CB86A11A10B775007364B0 /* BlackBox.png */,
+				F5CB86A21A10B775007364B0 /* BlackBox@2x.png */,
 				F5AB95FB194AAF6700713E28 /* TrashCan.png */,
 				F5AB95FC194AAF6700713E28 /* TrashCan@2x.png */,
 				F5AB95F7194AA10100713E28 /* ColorsImage.png */,
@@ -419,6 +431,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Caleb Gomer";
 				TargetAttributes = {
+					F504147318B8767D00787B21 = {
+						DevelopmentTeam = 7LVVFQ7LGW;
+					};
 					F504149A18B8767D00787B21 = {
 						TestTargetID = F504147318B8767D00787B21;
 					};
@@ -448,7 +463,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5CB86A31A10B775007364B0 /* BlackBox.png in Resources */,
 				F5AB95F5194A95BD00713E28 /* CheckImage.png in Resources */,
+				F5CB86A41A10B775007364B0 /* BlackBox@2x.png in Resources */,
 				F59E27C6192FCE3900147641 /* PlusImage@2x.png in Resources */,
 				F5D2576E18E243AD00AF21F7 /* NEOColorPickerHSLViewController.xib in Resources */,
 				F5AB95F6194A95BD00713E28 /* CheckImage@2x.png in Resources */,
@@ -662,10 +679,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BehaviorBuddy/PsychologyResearch-Prefix.pch";
 				INFOPLIST_FILE = "BehaviorBuddy/PsychologyResearch-Info.plist";
 				PRODUCT_NAME = BehaviorBuddy;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
@@ -676,10 +696,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BehaviorBuddy/PsychologyResearch-Prefix.pch";
 				INFOPLIST_FILE = "BehaviorBuddy/PsychologyResearch-Info.plist";
 				PRODUCT_NAME = BehaviorBuddy;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};

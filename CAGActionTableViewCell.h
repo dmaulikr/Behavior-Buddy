@@ -6,5 +6,6 @@
 - (void)setCellInitiation:(CAGInitiation *)initiation;
 - (void)setCellColor:(UIColor *)color;
 - (void)setCellFinished:(BOOL)finished;
+- (void)cellStoppedDisplaying;
 
 @end

@@ -14,7 +14,7 @@
 		<string>https://github.com/calebgomer/Behavior-Buddy.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>BehaviorBuddy.xcodeproj/project.xcworkspace</string>
+	<string>BehaviorBuddy.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>2B2A41EC400473B97D2A3A96C7C60C4E407CD886</key>
