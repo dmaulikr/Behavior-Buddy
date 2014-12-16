@@ -370,6 +370,7 @@
         [[self gcp] addSession:[[CAGSession alloc] initWithName:newSessionName]];
       }
       self.currentSession = [self gcp].sessions.count-1;
+      self.currentSetting = NO_CURRENT;
       [self.sessionTableView reloadData];
       [self.settingTableView reloadData];
       [self.reqsTableView reloadData];
