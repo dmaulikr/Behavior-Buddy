@@ -51,29 +51,88 @@
     if (self.videoLayer && self.videoLayer.superlayer) {
       [self.videoLayer removeFromSuperlayer];
     }
+    return;
   }
+  NSURL *imageUrl = self.behavior.imageUrl;
+  NSLog(@"imageUrl: %@", imageUrl);
   self.actionImageView.hidden = NO;
-  NSArray *assets = [[NSArray alloc] initWithObjects:self.behavior.imageUrl, nil];
+//  NSArray *assets = [[NSArray alloc] initWithObjects:self.behavior.imageUrl, nil];
+//  PHImageManager *manager = [PHImageManager defaultManager];
+//  PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:assets options:nil];
+  CGFloat size = 350 * (1 + self.behavior.imageSize);
+//  [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
+//    NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+//    [manager requestImageForAsset:asset targetSize:CGSizeMake(size, size) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+//      NSLog(@"image: %@\ninfo: %@",result,info);
+//      self.actionImage = result;
+//      self.actionImageView.image = result;
+//      self.actionImageView.hidden = NO;
+//      if (asset.mediaType == PHAssetMediaTypeVideo) {
+//        self.playButton.hidden = self.finished;
+//      } else {
+//        self.playButton.hidden = YES;
+//        if (self.videoLayer && self.videoLayer.superlayer) {
+//          [self.videoLayer removeFromSuperlayer];
+//        }
+//      }
+//    }];
+//  }];
+  
+  NSArray *assets = [[NSArray alloc] initWithObjects:imageUrl, nil];
   PHImageManager *manager = [PHImageManager defaultManager];
   PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:assets options:nil];
-  CGFloat size = 350 * (1 + self.behavior.imageSize);
-  [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
-    NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
-    [manager requestImageForAsset:asset targetSize:CGSizeMake(size, size) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
-      NSLog(@"image: %@\ninfo: %@",result,info);
-      self.actionImage = result;
-      self.actionImageView.image = result;
-      self.actionImageView.hidden = NO;
-      if (asset.mediaType == PHAssetMediaTypeVideo) {
-        self.playButton.hidden = self.finished;
-      } else {
-        self.playButton.hidden = YES;
-        if (self.videoLayer && self.videoLayer.superlayer) {
-          [self.videoLayer removeFromSuperlayer];
+  if (result.count > 0) {
+    [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
+      //      NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+      //      NSLog(@"phasset: %@", asset.localIdentifier);
+      //      NSLog(@"alasset: %@", behavior.imageUrl);
+      [manager requestImageForAsset:asset targetSize:CGSizeMake(size, size) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+        //        NSLog(@"image: %@\ninfo: %@",result,info);
+        self.actionImage = result;
+        self.actionImageView.image = result;
+        self.actionImageView.hidden = NO;
+        if (asset.mediaType == PHAssetMediaTypeVideo) {
+          self.playButton.hidden = self.finished;
+        } else {
+          self.playButton.hidden = YES;
+          if (self.videoLayer && self.videoLayer.superlayer) {
+            [self.videoLayer removeFromSuperlayer];
+          }
         }
-      }
+      }];
     }];
-  }];
+  } else {
+    PHFetchResult *stream = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream options:nil];
+    [stream enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+      PHFetchResult *images = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+      [images enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
+                NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+                NSLog(@"phasset: %@", asset.localIdentifier);
+                NSLog(@"alasset: %@", imageUrl);
+        NSString *assetUrl = [imageUrl absoluteString];
+        NSRange idLocation = [assetUrl rangeOfString:@"?id="];
+        NSString *assetId = [assetUrl substringWithRange:NSMakeRange(idLocation.location+idLocation.length, 36)];
+        if ([asset.localIdentifier hasPrefix:assetId]) {
+          //          NSLog(@"yay: found it");
+          *stop = YES;
+          [manager requestImageForAsset:asset targetSize:CGSizeMake(size, size) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+            //            NSLog(@"image: %@\ninfo: %@",result,info);
+            self.actionImage = result;
+            self.actionImageView.image = result;
+            self.actionImageView.hidden = NO;
+            if (asset.mediaType == PHAssetMediaTypeVideo) {
+              self.playButton.hidden = self.finished;
+            } else {
+              self.playButton.hidden = YES;
+              if (self.videoLayer && self.videoLayer.superlayer) {
+                [self.videoLayer removeFromSuperlayer];
+              }
+            }
+          }];
+        }
+      }];
+    }];
+  }
 }
 
 - (void)setCellColor:(UIColor *)color
