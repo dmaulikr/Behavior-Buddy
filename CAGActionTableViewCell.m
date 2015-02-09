@@ -1,5 +1,6 @@
 #import "CAGActionTableViewCell.h"
 #import <ImageIO/ImageIO.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @import Photos;
 @import PhotosUI;
@@ -43,40 +44,120 @@
   [self findActionImage];
 }
 
--(void)findActionImage
+- (void)showBehaviorImageTheOldWay:(NSURL *)imageUrl
 {
-  if (!self.behavior.imageUrl) {
-    self.actionImageView.image = nil;
-    self.playButton.hidden = YES;
-    if (self.videoLayer && self.videoLayer.superlayer) {
-      [self.videoLayer removeFromSuperlayer];
+  self.playButton.hidden = YES;
+  ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myAsset)
+  {
+    if (myAsset) {
+      UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:350*(1+self.behavior.imageSize)];
+      self.actionImage = image;
+      self.actionImageView.image = image;
+      self.actionImageView.hidden = NO;
+    } else {
+      // don't have this image anymore
+      self.behavior.imageUrl = nil;
+      self.actionImage = nil;
+      self.actionImageView.image = nil;
     }
-    return;
+  };
+  
+  ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
+  {
+    NSLog(@"Image access error: %@", [myerror localizedDescription]);
+  };
+  
+  ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+  [assetslibrary assetForURL:imageUrl
+                 resultBlock:resultblock
+                failureBlock:failureblock];
+}
+
+// Helper methods for thumbnailForAsset:maxPixelSize:
+static size_t getAssetBytesCallback(void *info, void *buffer, off_t position, size_t count) {
+  ALAssetRepresentation *rep = (__bridge id)info;
+  
+  NSError *error = nil;
+  size_t countRead = [rep getBytes:(uint8_t *)buffer fromOffset:position length:count error:&error];
+  
+  if (countRead == 0 && error) {
+    // We have no way of passing this info back to the caller, so we log it, at least.
+    NSLog(@"thumbnailForAsset:maxPixelSize: got an error reading an asset: %@", error);
   }
-  NSURL *imageUrl = self.behavior.imageUrl;
-  NSLog(@"imageUrl: %@", imageUrl);
-  self.actionImageView.hidden = NO;
-//  NSArray *assets = [[NSArray alloc] initWithObjects:self.behavior.imageUrl, nil];
-//  PHImageManager *manager = [PHImageManager defaultManager];
-//  PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:assets options:nil];
+  
+  return countRead;
+}
+
+static void releaseAssetCallback(void *info) {
+  // The info here is an ALAssetRepresentation which we CFRetain in thumbnailForAsset:maxPixelSize:.
+  // This release balances that retain.
+  CFRelease(info);
+}
+
+// Returns a UIImage for the given asset, with size length at most the passed size.
+// The resulting UIImage will be already rotated to UIImageOrientationUp, so its CGImageRef
+// can be used directly without additional rotation handling.
+// This is done synchronously, so you should call this method on a background queue/thread.
+- (UIImage *)thumbnailForAsset:(ALAsset *)asset maxPixelSize:(NSUInteger)size
+{
+  NSParameterAssert(asset != nil);
+  NSParameterAssert(size > 0);
+  
+  ALAssetRepresentation *rep = [asset defaultRepresentation];
+  
+  CGDataProviderDirectCallbacks callbacks = {
+    .version = 0,
+    .getBytePointer = NULL,
+    .releaseBytePointer = NULL,
+    .getBytesAtPosition = getAssetBytesCallback,
+    .releaseInfo = releaseAssetCallback,
+  };
+  
+  CGDataProviderRef provider = CGDataProviderCreateDirect((void *)CFBridgingRetain(rep), [rep size], &callbacks);
+  CGImageSourceRef source = CGImageSourceCreateWithDataProvider(provider, NULL);
+  
+  CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef) @{
+    (NSString *)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+    (NSString *)kCGImageSourceThumbnailMaxPixelSize : [NSNumber numberWithUnsignedInteger:size],
+    (NSString *)kCGImageSourceCreateThumbnailWithTransform : @YES,
+  });
+  CFRelease(source);
+  CFRelease(provider);
+  
+  if (!imageRef) {
+    return nil;
+  }
+  
+  UIImage *toReturn = [UIImage imageWithCGImage:imageRef];
+  
+  CFRelease(imageRef);
+  
+  return toReturn;
+}
+
+- (void)showBehaviorImageTheNewWay:(NSURL *)imageUrl
+{
+  //  NSArray *assets = [[NSArray alloc] initWithObjects:self.behavior.imageUrl, nil];
+  //  PHImageManager *manager = [PHImageManager defaultManager];
+  //  PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:assets options:nil];
   CGFloat size = 350 * (1 + self.behavior.imageSize);
-//  [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
-//    NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
-//    [manager requestImageForAsset:asset targetSize:CGSizeMake(size, size) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
-//      NSLog(@"image: %@\ninfo: %@",result,info);
-//      self.actionImage = result;
-//      self.actionImageView.image = result;
-//      self.actionImageView.hidden = NO;
-//      if (asset.mediaType == PHAssetMediaTypeVideo) {
-//        self.playButton.hidden = self.finished;
-//      } else {
-//        self.playButton.hidden = YES;
-//        if (self.videoLayer && self.videoLayer.superlayer) {
-//          [self.videoLayer removeFromSuperlayer];
-//        }
-//      }
-//    }];
-//  }];
+  //  [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
+  //    NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+  //    [manager requestImageForAsset:asset targetSize:CGSizeMake(size, size) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+  //      NSLog(@"image: %@\ninfo: %@",result,info);
+  //      self.actionImage = result;
+  //      self.actionImageView.image = result;
+  //      self.actionImageView.hidden = NO;
+  //      if (asset.mediaType == PHAssetMediaTypeVideo) {
+  //        self.playButton.hidden = self.finished;
+  //      } else {
+  //        self.playButton.hidden = YES;
+  //        if (self.videoLayer && self.videoLayer.superlayer) {
+  //          [self.videoLayer removeFromSuperlayer];
+  //        }
+  //      }
+  //    }];
+  //  }];
   
   NSArray *assets = [[NSArray alloc] initWithObjects:imageUrl, nil];
   PHImageManager *manager = [PHImageManager defaultManager];
@@ -106,9 +187,9 @@
     [stream enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
       PHFetchResult *images = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
       [images enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
-                NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
-                NSLog(@"phasset: %@", asset.localIdentifier);
-                NSLog(@"alasset: %@", imageUrl);
+        NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+        NSLog(@"phasset: %@", asset.localIdentifier);
+        NSLog(@"alasset: %@", imageUrl);
         NSString *assetUrl = [imageUrl absoluteString];
         NSRange idLocation = [assetUrl rangeOfString:@"?id="];
         NSString *assetId = [assetUrl substringWithRange:NSMakeRange(idLocation.location+idLocation.length, 36)];
@@ -132,6 +213,27 @@
         }
       }];
     }];
+  }
+}
+
+- (void)findActionImage
+{
+  if (!self.behavior.imageUrl) {
+    self.actionImageView.image = nil;
+    self.playButton.hidden = YES;
+    if (self.videoLayer && self.videoLayer.superlayer) {
+      [self.videoLayer removeFromSuperlayer];
+    }
+    return;
+  }
+  NSURL *imageUrl = self.behavior.imageUrl;
+  NSLog(@"imageUrl: %@", imageUrl);
+  self.actionImageView.hidden = NO;
+  
+  if(NSClassFromString(@"PHImageManager")) {
+    [self showBehaviorImageTheNewWay:imageUrl];
+  } else {
+    [self showBehaviorImageTheOldWay:imageUrl];
   }
 }
 

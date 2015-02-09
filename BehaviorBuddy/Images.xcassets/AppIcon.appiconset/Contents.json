@@ -13,7 +13,7 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "app-icon-puzzle-iphone.png",
+      "filename" : "app-icon-puzzle-new-iphone.png",
       "scale" : "2x"
     },
     {
@@ -44,13 +44,13 @@
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "app-icon-puzzle-ipad.png",
+      "filename" : "app-icon-puzzle-new-ipad.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "app-icon-puzzle-ipad@2x.png",
+      "filename" : "app-icon-puzzle-new-ipad@2x.png",
       "scale" : "2x"
     }
   ],

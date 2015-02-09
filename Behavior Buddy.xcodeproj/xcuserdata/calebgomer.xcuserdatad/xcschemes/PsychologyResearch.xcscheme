@@ -20,6 +20,20 @@
                ReferencedContainer = "container:BehaviorBuddy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F504147318B8767D00787B21"
+               BuildableName = "Behavior Buddy.app"
+               BlueprintName = "PsychologyResearch"
+               ReferencedContainer = "container:Behavior Buddy.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,24 +42,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F504149A18B8767D00787B21"
-               BuildableName = "PsychologyResearchTests.xctest"
-               BlueprintName = "PsychologyResearchTests"
-               ReferencedContainer = "container:BehaviorBuddy.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F504147318B8767D00787B21"
-            BuildableName = "BehaviorBuddy.app"
+            BuildableName = "Behavior Buddy.app"
             BlueprintName = "PsychologyResearch"
-            ReferencedContainer = "container:BehaviorBuddy.xcodeproj">
+            ReferencedContainer = "container:Behavior Buddy.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F504147318B8767D00787B21"
-            BuildableName = "BehaviorBuddy.app"
+            BuildableName = "Behavior Buddy.app"
             BlueprintName = "PsychologyResearch"
-            ReferencedContainer = "container:BehaviorBuddy.xcodeproj">
+            ReferencedContainer = "container:Behavior Buddy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +84,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F504147318B8767D00787B21"
-            BuildableName = "BehaviorBuddy.app"
+            BuildableName = "Behavior Buddy.app"
             BlueprintName = "PsychologyResearch"
-            ReferencedContainer = "container:BehaviorBuddy.xcodeproj">
+            ReferencedContainer = "container:Behavior Buddy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

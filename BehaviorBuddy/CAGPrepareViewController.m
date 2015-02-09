@@ -2,7 +2,7 @@
 #import "CAGNewBehaviorView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CAGCustomTypes.h"
-//#import <AssetsLibrary/AssetsLibrary.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 
 /***
@@ -85,6 +85,11 @@
   self.behaviorImageContainerBackground.layer.borderColor = [self.blueColor CGColor];
   
   self.currentParticipant = NO_CURRENT;
+  
+  if(!NSClassFromString(@"PHImageManager")) {
+    // pre-iOS 8 does not support videos
+    _behaviorImageName.text = @"Behavior Image";
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -338,8 +343,6 @@
       editButton.hidden = NO;
       deleteButton.hidden = NO;
       cell.backgroundColor = self.blueColor;
-      // todo !!!!! fill in behavior image stuff
-//      self.behaviorImageName.text = [NSString stringWithFormat:@"%@ Image", behavior.name];
       [self.behaviorImageSizeControl setSelectedSegmentIndex:behavior.imageSize];
     }
     else {
@@ -736,21 +739,78 @@
     self.behaviorImageView.image = nil;
     return;
   }
-//  code in this section is absolutely awful, thanks to issues with PhotoStream asset URLs and Photos framework in ios 8
-//  seriously, Apple, way to screw this up bad:
-//  http://stackoverflow.com/questions/26588496/loading-image-from-my-photo-stream-using-uiimagepicker-results-url-and-phasset
-//  http://stackoverflow.com/questions/26480526/alassetslibrary-assetforurl-always-returning-nil-for-photos-in-my-photo-stream
+  if(NSClassFromString(@"PHImageManager")) {
+    [self showBehaviorImageTheNewWay:behavior];
+  } else {
+    [self showBehaviorImageTheOldWay:behavior];
+  }
+}
+
+- (void)showBehaviorImageTheOldWay:(CAGInitiation *)behavior
+{
+    ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+  
+    ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myAsset)
+    {
+      NSLog(@"url: %@",behavior.imageUrl);
+      NSLog(@"asset: %@",myAsset);
+      if (myAsset) {
+        UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:500];
+        self.behaviorImage = image;
+        self.behaviorImageView.image = image;
+      } else {
+        [assetslibrary enumerateGroupsWithTypes:ALAssetsGroupPhotoStream usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+           [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+             if([result.defaultRepresentation.url isEqual:behavior.imageUrl]) {
+               UIImage *image = [self thumbnailForAsset:result maxPixelSize:500];
+               self.behaviorImage = image;
+               self.behaviorImageView.image = image;
+               *stop = YES;
+             }
+           }];
+         } failureBlock:^(NSError *error) {
+           NSLog(@"Error: Cannot load asset from photo stream - %@", [error localizedDescription]);
+           [[[UIAlertView alloc] initWithTitle:@"Sorry..." message:@"The image you selected for this behavior isn't available. Please choose a new one." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+           self.behaviorImage = nil;
+           self.behaviorImageView.image = nil;
+           [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageUrl = nil;
+           [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageSize = 0;
+         }];
+      }
+    };
+  
+    ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
+    {
+      NSLog(@"Image access error: %@", [myerror localizedDescription]);
+      [[[UIAlertView alloc] initWithTitle:@"Sorry..." message:@"The image you selected for this behavior isn't available. Please choose a new one." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+      self.behaviorImage = nil;
+      self.behaviorImageView.image = nil;
+      [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageUrl = nil;
+      [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageSize = 0;
+    };
+  
+    [assetslibrary assetForURL:behavior.imageUrl
+                   resultBlock:resultblock
+                  failureBlock:failureblock];
+}
+
+- (void)showBehaviorImageTheNewWay:(CAGInitiation *)behavior
+{
+  //  code in this section is absolutely awful, thanks to issues with PhotoStream asset URLs and Photos framework in ios 8
+  //  seriously, Apple, way to screw this up bad:
+  //  http://stackoverflow.com/questions/26588496/loading-image-from-my-photo-stream-using-uiimagepicker-results-url-and-phasset
+  //  http://stackoverflow.com/questions/26480526/alassetslibrary-assetforurl-always-returning-nil-for-photos-in-my-photo-stream
   
   NSArray *assets = [[NSArray alloc] initWithObjects:behavior.imageUrl, nil];
   PHImageManager *manager = [PHImageManager defaultManager];
   PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:assets options:nil];
   if (result.count > 0) {
     [result enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
-//      NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
-//      NSLog(@"phasset: %@", asset.localIdentifier);
-//      NSLog(@"alasset: %@", behavior.imageUrl);
+      //      NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+      //      NSLog(@"phasset: %@", asset.localIdentifier);
+      //      NSLog(@"alasset: %@", behavior.imageUrl);
       [manager requestImageForAsset:asset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
-//        NSLog(@"image: %@\ninfo: %@",result,info);
+        //        NSLog(@"image: %@\ninfo: %@",result,info);
         self.behaviorImage = result;
         self.behaviorImageView.image = result;
       }];
@@ -760,17 +820,17 @@
     [stream enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
       PHFetchResult *images = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
       [images enumerateObjectsUsingBlock:^(PHAsset *asset, NSUInteger idx, BOOL *stop) {
-//        NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
-//        NSLog(@"phasset: %@", asset.localIdentifier);
-//        NSLog(@"alasset: %@", behavior.imageUrl);
+        //        NSLog(@"stuff: %@, %lu, %@",asset,(unsigned long)idx,stop?@"yes":@"no");
+        //        NSLog(@"phasset: %@", asset.localIdentifier);
+        //        NSLog(@"alasset: %@", behavior.imageUrl);
         NSString *assetUrl = [behavior.imageUrl absoluteString];
         NSRange idLocation = [assetUrl rangeOfString:@"?id="];
         NSString *assetId = [assetUrl substringWithRange:NSMakeRange(idLocation.location+idLocation.length, 36)];
         if ([asset.localIdentifier hasPrefix:assetId]) {
-//          NSLog(@"yay: found it");
+          //          NSLog(@"yay: found it");
           *stop = YES;
           [manager requestImageForAsset:asset targetSize:CGSizeMake(500, 500) contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
-//            NSLog(@"image: %@\ninfo: %@",result,info);
+            //            NSLog(@"image: %@\ninfo: %@",result,info);
             self.behaviorImage = result;
             self.behaviorImageView.image = result;
           }];
@@ -778,114 +838,69 @@
       }];
     }];
   }
-
-//  ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-//  
-//  ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myAsset)
-//  {
-//    NSLog(@"url: %@",behavior.imageUrl);
-//    NSLog(@"asset: %@",myAsset);
-//    if (myAsset) {
-//      UIImage *image = [self thumbnailForAsset:myAsset maxPixelSize:500];
-//      self.behaviorImage = image;
-//      self.behaviorImageView.image = image;
-//    } else {
-//      [assetslibrary enumerateGroupsWithTypes:ALAssetsGroupPhotoStream usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-//         [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-//           if([result.defaultRepresentation.url isEqual:behavior.imageUrl]) {
-//             UIImage *image = [self thumbnailForAsset:result maxPixelSize:500];
-//             self.behaviorImage = image;
-//             self.behaviorImageView.image = image;
-//             *stop = YES;
-//           }
-//         }];
-//       } failureBlock:^(NSError *error) {
-//         NSLog(@"Error: Cannot load asset from photo stream - %@", [error localizedDescription]);
-//         [[[UIAlertView alloc] initWithTitle:@"Sorry..." message:@"The image you selected for this behavior wasn't found. Please edit the image and choose a new one." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
-//         self.behaviorImage = nil;
-//         self.behaviorImageView.image = nil;
-//         [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageUrl = nil;
-//         [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageSize = 0;
-//       }];
-//    }
-//  };
-  
-//  ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
-//  {
-//    NSLog(@"Image access error: %@", [myerror localizedDescription]);
-//    [[[UIAlertView alloc] initWithTitle:@"Sorry..." message:@"The image you selected for this behavior wasn't found. Please edit the image and choose a new one." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
-//    self.behaviorImage = nil;
-//    self.behaviorImageView.image = nil;
-//    [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageUrl = nil;
-//    [[[self gcp] getInitiationTypeAtIndex:self.currentBehaviorType] getInitiationAtIndex:self.currentBehavior].imageSize = 0;
-//  };
-//  
-//  [assetslibrary assetForURL:behavior.imageUrl
-//                 resultBlock:resultblock
-//                failureBlock:failureblock];
 }
 
-//// Helper methods for thumbnailForAsset:maxPixelSize:
-//static size_t getAssetBytesCallback(void *info, void *buffer, off_t position, size_t count) {
-//  ALAssetRepresentation *rep = (__bridge id)info;
-//  
-//  NSError *error = nil;
-//  size_t countRead = [rep getBytes:(uint8_t *)buffer fromOffset:position length:count error:&error];
-//  
-//  if (countRead == 0 && error) {
-//    // We have no way of passing this info back to the caller, so we log it, at least.
-//    NSLog(@"thumbnailForAsset:maxPixelSize: got an error reading an asset: %@", error);
-//  }
-//  
-//  return countRead;
-//}
-//
-//static void releaseAssetCallback(void *info) {
-//  // The info here is an ALAssetRepresentation which we CFRetain in thumbnailForAsset:maxPixelSize:.
-//  // This release balances that retain.
-//  CFRelease(info);
-//}
-//
-//// Returns a UIImage for the given asset, with size length at most the passed size.
-//// The resulting UIImage will be already rotated to UIImageOrientationUp, so its CGImageRef
-//// can be used directly without additional rotation handling.
-//// This is done synchronously, so you should call this method on a background queue/thread.
-//- (UIImage *)thumbnailForAsset:(ALAsset *)asset maxPixelSize:(NSUInteger)size
-//{
-//  NSParameterAssert(asset != nil);
-//  NSParameterAssert(size > 0);
-//  
-//  ALAssetRepresentation *rep = [asset defaultRepresentation];
-//  
-//  CGDataProviderDirectCallbacks callbacks = {
-//    .version = 0,
-//    .getBytePointer = NULL,
-//    .releaseBytePointer = NULL,
-//    .getBytesAtPosition = getAssetBytesCallback,
-//    .releaseInfo = releaseAssetCallback,
-//  };
-//  
-//  CGDataProviderRef provider = CGDataProviderCreateDirect((void *)CFBridgingRetain(rep), [rep size], &callbacks);
-//  CGImageSourceRef source = CGImageSourceCreateWithDataProvider(provider, NULL);
-//  
-//  CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef) @{
-//    (NSString *)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
-//    (NSString *)kCGImageSourceThumbnailMaxPixelSize : [NSNumber numberWithUnsignedInteger:size],
-//    (NSString *)kCGImageSourceCreateThumbnailWithTransform : @YES,
-//  });
-//  CFRelease(source);
-//  CFRelease(provider);
-//  
-//  if (!imageRef) {
-//    return nil;
-//  }
-//  
-//  UIImage *toReturn = [UIImage imageWithCGImage:imageRef];
-//  
-//  CFRelease(imageRef);
-//  
-//  return toReturn;
-//}
+// Helper methods for thumbnailForAsset:maxPixelSize:
+static size_t getAssetBytesCallback(void *info, void *buffer, off_t position, size_t count) {
+  ALAssetRepresentation *rep = (__bridge id)info;
+  
+  NSError *error = nil;
+  size_t countRead = [rep getBytes:(uint8_t *)buffer fromOffset:position length:count error:&error];
+  
+  if (countRead == 0 && error) {
+    // We have no way of passing this info back to the caller, so we log it, at least.
+    NSLog(@"thumbnailForAsset:maxPixelSize: got an error reading an asset: %@", error);
+  }
+  
+  return countRead;
+}
+
+static void releaseAssetCallback(void *info) {
+  // The info here is an ALAssetRepresentation which we CFRetain in thumbnailForAsset:maxPixelSize:.
+  // This release balances that retain.
+  CFRelease(info);
+}
+
+// Returns a UIImage for the given asset, with size length at most the passed size.
+// The resulting UIImage will be already rotated to UIImageOrientationUp, so its CGImageRef
+// can be used directly without additional rotation handling.
+// This is done synchronously, so you should call this method on a background queue/thread.
+- (UIImage *)thumbnailForAsset:(ALAsset *)asset maxPixelSize:(NSUInteger)size
+{
+  NSParameterAssert(asset != nil);
+  NSParameterAssert(size > 0);
+  
+  ALAssetRepresentation *rep = [asset defaultRepresentation];
+  
+  CGDataProviderDirectCallbacks callbacks = {
+    .version = 0,
+    .getBytePointer = NULL,
+    .releaseBytePointer = NULL,
+    .getBytesAtPosition = getAssetBytesCallback,
+    .releaseInfo = releaseAssetCallback,
+  };
+  
+  CGDataProviderRef provider = CGDataProviderCreateDirect((void *)CFBridgingRetain(rep), [rep size], &callbacks);
+  CGImageSourceRef source = CGImageSourceCreateWithDataProvider(provider, NULL);
+  
+  CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef) @{
+    (NSString *)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+    (NSString *)kCGImageSourceThumbnailMaxPixelSize : [NSNumber numberWithUnsignedInteger:size],
+    (NSString *)kCGImageSourceCreateThumbnailWithTransform : @YES,
+  });
+  CFRelease(source);
+  CFRelease(provider);
+  
+  if (!imageRef) {
+    return nil;
+  }
+  
+  UIImage *toReturn = [UIImage imageWithCGImage:imageRef];
+  
+  CFRelease(imageRef);
+  
+  return toReturn;
+}
 
 - (IBAction)lockApp:(id)sender
 {
