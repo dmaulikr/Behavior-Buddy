@@ -51,7 +51,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CAGActionTableViewCell.m"
+            filePath = "BehaviorBuddy/CAGActionTableViewCell.m"
             timestampString = "445146231.430704"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"

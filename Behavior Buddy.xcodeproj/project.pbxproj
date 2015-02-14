@@ -28,18 +28,16 @@
 		F50414A918B8767E00787B21 /* PsychologyResearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F50414A818B8767E00787B21 /* PsychologyResearchTests.m */; };
 		F530AB6618C0A82700B4CFE7 /* CAGRecordBehaviorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F530AB6518C0A82700B4CFE7 /* CAGRecordBehaviorView.m */; };
 		F530AB6818C0A83F00B4CFE7 /* CAGRecordBehaviorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F530AB6718C0A83F00B4CFE7 /* CAGRecordBehaviorView.xib */; };
-		F53160191A884E030099E6B5 /* app-icon-puzzle-new-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F53160161A884E030099E6B5 /* app-icon-puzzle-new-ipad.png */; };
-		F531601A1A884E030099E6B5 /* app-icon-puzzle-new-ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F53160171A884E030099E6B5 /* app-icon-puzzle-new-ipad@2x.png */; };
-		F531601B1A884E030099E6B5 /* app-icon-puzzle-new-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F53160181A884E030099E6B5 /* app-icon-puzzle-new-iphone.png */; };
-		F531601F1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F531601C1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad.png */; };
-		F53160201A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F531601D1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad@2x.png */; };
-		F53160211A8850CC0099E6B5 /* app-icon-puzzle-new2-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F531601E1A8850CC0099E6B5 /* app-icon-puzzle-new2-iphone.png */; };
 		F531602D1A885BC60099E6B5 /* Interact.png in Resources */ = {isa = PBXBuildFile; fileRef = F531602A1A885BC60099E6B5 /* Interact.png */; };
 		F531602E1A885BC60099E6B5 /* Interact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F531602B1A885BC60099E6B5 /* Interact@2x.png */; };
 		F531602F1A885BC60099E6B5 /* Prepare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F531602C1A885BC60099E6B5 /* Prepare@2x.png */; };
 		F53160311A885BD80099E6B5 /* Prepare.png in Resources */ = {isa = PBXBuildFile; fileRef = F53160301A885BD80099E6B5 /* Prepare.png */; };
 		F531603F1A885FF10099E6B5 /* launchimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F531603D1A885FF10099E6B5 /* launchimage@2x.png */; };
 		F53160411A8861260099E6B5 /* launchimage.png in Resources */ = {isa = PBXBuildFile; fileRef = F53160401A8861260099E6B5 /* launchimage.png */; };
+		F548BC161A8F4E8300D3546C /* app-icon-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F548BC121A8F4E8300D3546C /* app-icon-ipad.png */; };
+		F548BC171A8F4E8300D3546C /* app-icon-ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F548BC131A8F4E8300D3546C /* app-icon-ipad@2x.png */; };
+		F548BC181A8F4E8300D3546C /* app-icon-iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F548BC141A8F4E8300D3546C /* app-icon-iphone@2x.png */; };
+		F548BC191A8F4E8300D3546C /* app-icon-iphone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F548BC151A8F4E8300D3546C /* app-icon-iphone@3x.png */; };
 		F59E27C5192FCE3900147641 /* PlusImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F59E27C3192FCE3900147641 /* PlusImage.png */; };
 		F59E27C6192FCE3900147641 /* PlusImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F59E27C4192FCE3900147641 /* PlusImage@2x.png */; };
 		F59E27C91930454500147641 /* EditImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F59E27C71930454500147641 /* EditImage.png */; };
@@ -133,18 +131,16 @@
 		F530AB6418C0A82700B4CFE7 /* CAGRecordBehaviorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAGRecordBehaviorView.h; sourceTree = "<group>"; };
 		F530AB6518C0A82700B4CFE7 /* CAGRecordBehaviorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAGRecordBehaviorView.m; sourceTree = "<group>"; };
 		F530AB6718C0A83F00B4CFE7 /* CAGRecordBehaviorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAGRecordBehaviorView.xib; sourceTree = "<group>"; };
-		F53160161A884E030099E6B5 /* app-icon-puzzle-new-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-puzzle-new-ipad.png"; sourceTree = "<group>"; };
-		F53160171A884E030099E6B5 /* app-icon-puzzle-new-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-puzzle-new-ipad@2x.png"; sourceTree = "<group>"; };
-		F53160181A884E030099E6B5 /* app-icon-puzzle-new-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-puzzle-new-iphone.png"; sourceTree = "<group>"; };
-		F531601C1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-puzzle-new2-ipad.png"; sourceTree = "<group>"; };
-		F531601D1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-puzzle-new2-ipad@2x.png"; sourceTree = "<group>"; };
-		F531601E1A8850CC0099E6B5 /* app-icon-puzzle-new2-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-puzzle-new2-iphone.png"; sourceTree = "<group>"; };
 		F531602A1A885BC60099E6B5 /* Interact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Interact.png; sourceTree = "<group>"; };
 		F531602B1A885BC60099E6B5 /* Interact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Interact@2x.png"; sourceTree = "<group>"; };
 		F531602C1A885BC60099E6B5 /* Prepare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Prepare@2x.png"; sourceTree = "<group>"; };
 		F53160301A885BD80099E6B5 /* Prepare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Prepare.png; sourceTree = "<group>"; };
 		F531603D1A885FF10099E6B5 /* launchimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchimage@2x.png"; sourceTree = "<group>"; };
 		F53160401A8861260099E6B5 /* launchimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchimage.png; sourceTree = "<group>"; };
+		F548BC121A8F4E8300D3546C /* app-icon-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-ipad.png"; sourceTree = "<group>"; };
+		F548BC131A8F4E8300D3546C /* app-icon-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-ipad@2x.png"; sourceTree = "<group>"; };
+		F548BC141A8F4E8300D3546C /* app-icon-iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-iphone@2x.png"; sourceTree = "<group>"; };
+		F548BC151A8F4E8300D3546C /* app-icon-iphone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon-iphone@3x.png"; sourceTree = "<group>"; };
 		F5912DE11A0F021800B65EF5 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		F59E27C3192FCE3900147641 /* PlusImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlusImage.png; sourceTree = "<group>"; };
 		F59E27C4192FCE3900147641 /* PlusImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlusImage@2x.png"; sourceTree = "<group>"; };
@@ -192,9 +188,9 @@
 		F5D2578918E2890500AF21F7 /* CAGTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAGTypeTableViewCell.h; sourceTree = "<group>"; };
 		F5D2578A18E2890500AF21F7 /* CAGTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAGTypeTableViewCell.m; sourceTree = "<group>"; };
 		F5D2578B18E2890500AF21F7 /* CAGTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAGTypeTableViewCell.xib; sourceTree = "<group>"; };
-		F5D2579318E2893500AF21F7 /* CAGActionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAGActionTableViewCell.h; path = ../CAGActionTableViewCell.h; sourceTree = "<group>"; };
-		F5D2579418E2893500AF21F7 /* CAGActionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAGActionTableViewCell.m; path = ../CAGActionTableViewCell.m; sourceTree = "<group>"; };
-		F5D2579518E2893500AF21F7 /* CAGActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CAGActionTableViewCell.xib; path = ../CAGActionTableViewCell.xib; sourceTree = "<group>"; };
+		F5D2579318E2893500AF21F7 /* CAGActionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAGActionTableViewCell.h; path = BehaviorBuddy/CAGActionTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		F5D2579418E2893500AF21F7 /* CAGActionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAGActionTableViewCell.m; path = BehaviorBuddy/CAGActionTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		F5D2579518E2893500AF21F7 /* CAGActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CAGActionTableViewCell.xib; path = BehaviorBuddy/CAGActionTableViewCell.xib; sourceTree = SOURCE_ROOT; };
 		F5D2579818E2986000AF21F7 /* color-picker-hue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "color-picker-hue@2x.png"; path = "Source/colorPicker.bundle/color-picker-hue@2x.png"; sourceTree = "<group>"; };
 		F5D2579A18E53FFD00AF21F7 /* CAGParticipantResponsesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CAGParticipantResponsesView.xib; sourceTree = "<group>"; };
 		F5D2579C18E5409100AF21F7 /* CAGParticipantResponsesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAGParticipantResponsesView.h; sourceTree = "<group>"; };
@@ -325,12 +321,10 @@
 				F5EB7D3719452D6100ACEB45 /* CAGChooseParticipantTableViewCell.m */,
 				F5EB7D3819452D6100ACEB45 /* CAGChooseParticipantTableViewCell.xib */,
 				F504149518B8767D00787B21 /* Images.xcassets */,
-				F53160161A884E030099E6B5 /* app-icon-puzzle-new-ipad.png */,
-				F53160171A884E030099E6B5 /* app-icon-puzzle-new-ipad@2x.png */,
-				F53160181A884E030099E6B5 /* app-icon-puzzle-new-iphone.png */,
-				F531601C1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad.png */,
-				F531601D1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad@2x.png */,
-				F531601E1A8850CC0099E6B5 /* app-icon-puzzle-new2-iphone.png */,
+				F548BC121A8F4E8300D3546C /* app-icon-ipad.png */,
+				F548BC131A8F4E8300D3546C /* app-icon-ipad@2x.png */,
+				F548BC141A8F4E8300D3546C /* app-icon-iphone@2x.png */,
+				F548BC151A8F4E8300D3546C /* app-icon-iphone@3x.png */,
 				F5CB86A11A10B775007364B0 /* BlackBox.png */,
 				F5CB86A21A10B775007364B0 /* BlackBox@2x.png */,
 				F5AB95FB194AAF6700713E28 /* TrashCan.png */,
@@ -516,22 +510,20 @@
 				F5CB86A31A10B775007364B0 /* BlackBox.png in Resources */,
 				F5AB95F5194A95BD00713E28 /* CheckImage.png in Resources */,
 				F5CB86A41A10B775007364B0 /* BlackBox@2x.png in Resources */,
-				F531601A1A884E030099E6B5 /* app-icon-puzzle-new-ipad@2x.png in Resources */,
-				F53160201A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad@2x.png in Resources */,
-				F53160191A884E030099E6B5 /* app-icon-puzzle-new-ipad.png in Resources */,
 				F59E27C6192FCE3900147641 /* PlusImage@2x.png in Resources */,
+				F548BC181A8F4E8300D3546C /* app-icon-iphone@2x.png in Resources */,
 				F5D2576E18E243AD00AF21F7 /* NEOColorPickerHSLViewController.xib in Resources */,
 				F5AB95F6194A95BD00713E28 /* CheckImage@2x.png in Resources */,
 				F5EB7D2F1945168D00ACEB45 /* ForwardImage.png in Resources */,
 				F531603F1A885FF10099E6B5 /* launchimage@2x.png in Resources */,
 				F5DAA35218BC7F340097CB97 /* CAGNewBehaviorView.xib in Resources */,
+				F548BC191A8F4E8300D3546C /* app-icon-iphone@3x.png in Resources */,
 				F5D2577218E243AD00AF21F7 /* NEOColorPickerViewController.xib in Resources */,
 				F5D2579918E2986000AF21F7 /* color-picker-hue@2x.png in Resources */,
 				F5D2577018E243AD00AF21F7 /* NEOColorPickerHueGridViewController.xib in Resources */,
 				F531602E1A885BC60099E6B5 /* Interact@2x.png in Resources */,
 				F5EB7D301945168D00ACEB45 /* ForwardImage@2x.png in Resources */,
 				F5AB95F2194A959E00713E28 /* XImage@2x.png in Resources */,
-				F531601F1A8850CC0099E6B5 /* app-icon-puzzle-new2-ipad.png in Resources */,
 				F531602D1A885BC60099E6B5 /* Interact.png in Resources */,
 				F5AB95FE194AAF6700713E28 /* TrashCan@2x.png in Resources */,
 				F504148E18B8767D00787B21 /* Main_iPad.storyboard in Resources */,
@@ -546,15 +538,15 @@
 				F59E27CA1930454500147641 /* EditImage@2x.png in Resources */,
 				F59E27C5192FCE3900147641 /* PlusImage.png in Resources */,
 				F5AB95FA194AA10100713E28 /* ColorsImage@2x.png in Resources */,
-				F53160211A8850CC0099E6B5 /* app-icon-puzzle-new2-iphone.png in Resources */,
 				F504149618B8767D00787B21 /* Images.xcassets in Resources */,
+				F548BC161A8F4E8300D3546C /* app-icon-ipad.png in Resources */,
 				F5D2576B18E243AD00AF21F7 /* NEOColorPickerFavoritesViewController.xib in Resources */,
 				F5AB95F9194AA10100713E28 /* ColorsImage.png in Resources */,
-				F531601B1A884E030099E6B5 /* app-icon-puzzle-new-iphone.png in Resources */,
 				F5EB7D35194529A400ACEB45 /* CAGChooseParticipantViewController.xib in Resources */,
 				F5EB7D3A19452D6100ACEB45 /* CAGChooseParticipantTableViewCell.xib in Resources */,
 				F531602F1A885BC60099E6B5 /* Prepare@2x.png in Resources */,
 				F504148B18B8767D00787B21 /* Main_iPhone.storyboard in Resources */,
+				F548BC171A8F4E8300D3546C /* app-icon-ipad@2x.png in Resources */,
 				F5D2578D18E2890500AF21F7 /* CAGTypeTableViewCell.xib in Resources */,
 				F53160411A8861260099E6B5 /* launchimage.png in Resources */,
 				F5AB95FD194AAF6700713E28 /* TrashCan.png in Resources */,
