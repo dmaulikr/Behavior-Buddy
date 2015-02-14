@@ -1,6 +1,7 @@
 {
   "name": "behaviorbuddy.org",
   "version": "0.0.1",
+  "repository": "https://github.com/calebgomer/Behavior-Buddy",
   "description": "An information and support website for the Behavior Buddy app",
   "main": "behaviorbuddy.org/app.js",
   "scripts": {
