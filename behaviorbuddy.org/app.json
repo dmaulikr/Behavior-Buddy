@@ -1,7 +1,6 @@
 {
   "name": "behaviorbuddy.org",
   "description": "An information and support website for the Behavior Buddy app",
-  "repository": "https://github.com/heroku/node-js-getting-started",
-  "logo": "http://behaviorbuddy.org/icon.png",
-  "keywords": ["node", "express", "static"]
+  "repository": "https://github.com/calebgomer/Behavior-Buddy",
+  "logo": "http://behaviorbuddy.org/icon.png"
 }
